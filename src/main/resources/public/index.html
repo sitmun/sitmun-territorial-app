@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>SIMTUN Aplicación Territorial</title>
+
+    <!--
+        JS dependencies spec (generated at runtime)
+
+        Front-end developers will require an offline version (first hint that thymeleaf may be necessary here)
+    -->
+    <script src="/app/config.js"></script>
+
+    <!--
+        Ensure requireJS is run before main.js
+        where the dependencies are explicit.
+        Should main.js be generated at runtime?
+    -->
+    <script data-main="/app/main.js" src="/webjars/requirejs/require.min.js"></script>
+
+    <!-- here should be the script of the app, thus main.js is not a good name FIXME -->
+
+    <!--
+        This should be the concatenation of all CSS provided by modules
+
+        Developers require a offline version (first hint that thymeleaf is necessary here)
+    -->
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+
+    <!-- here should be the css specific of the app -->
+
+</head>
+<body>
+<div class="container"><br/>
+    <div id="toolbar"></div>
+    Hello World
+</div>
+</body>
+</html>

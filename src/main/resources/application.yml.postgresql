@@ -1,0 +1,25 @@
+spring:
+    application:
+        name: sitmun-territorial-app
+    datasource:
+        type: com.zaxxer.hikari.HikariDataSource    
+        driverClassName: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:5432/sitmun
+        username: sitmun3
+        password: sitmun3
+        continue-on-error: true
+    jpa:
+        open-in-view: false
+        database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
+        database: POSTGRESQL
+        show-sql: true
+        hibernate:
+               id.new_generator_mappings: true
+               cache.use_second_level_cache: false
+               cache.use_query_cache: false
+               generate_statistics: false
+               ddl-auto: update
+               format_sql: true
+               naming:
+                 physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+                 implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy

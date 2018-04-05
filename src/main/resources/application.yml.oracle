@@ -1,0 +1,33 @@
+spring:
+    application:
+        name: sitmun-territorial-app
+    datasource:
+        type: com.zaxxer.hikari.HikariDataSource
+        driverClassName: oracle.jdbc.OracleDriver
+        url: jdbc:oracle:thin:@ginebra.internal.geoslab.com:49161:xe
+        username: SITMUN3
+        password: SITMUN3
+        testWhileIdle: true
+        validationQuery: SELECT 1        
+        continue-on-error: true
+        hikari.connection-timeout: 60000
+        hikari.maximum-pool-size: 5
+    jpa:
+        open-in-view: false
+        database-platform: org.hibernate.dialect.Oracle10gDialect
+        database: ORACLE
+        show-sql: true
+        hibernate:
+               id.new_generator_mappings: true
+               cache.use_second_level_cache: false
+               cache.use_query_cache: false
+               generate_statistics: false
+               ddl-auto: update
+               format_sql: true
+               naming:
+                 physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+                 implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    data:
+       rest.base-path: api
+    thymeleaf:
+       cache: false
