@@ -18,7 +18,7 @@ else
 fi
 
 if git clone https://github.com/sitmun/sitmun-plugin-demo.git $PLUGIN_DIR/sitmun-plugin-demo; then
-    cd $PLUGIN_DIR/sitmun-plugin-core
+    cd $PLUGIN_DIR/sitmun-plugin-demo
     ./gradlew clean install
 else
     echo
