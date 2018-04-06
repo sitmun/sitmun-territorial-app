@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 if [ -z $PLUGIN_DIR ]; then
     PLUGIN_DIR=$(mktemp -d)
 fi
