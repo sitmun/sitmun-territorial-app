@@ -1,0 +1,18 @@
+addons:
+  sonarcloud:
+    organization: sitmun
+
+before_install: ./build-scripts/install-dependencies.sh
+
+script: ./build-scripts/script.sh
+
+after_success: ./build-scripts/after_success.sh
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
