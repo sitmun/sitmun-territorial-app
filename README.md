@@ -9,7 +9,7 @@ Build: `$ ./build-scripts/build-local.sh`. If the build is successful it will la
 
 Run: `$ ./gradlew bootRun` and go to <http://localhost:8080>.
 
-If you the SonarCloud analysis has been properly run, you can see the report by clicking on the quality gate badge above.
+If the SonarCloud analysis has been properly run, you can see the report by clicking on the quality gate badge above.
 
 # Dependencies
 This project depends on these plugins (already considered in the build script):
