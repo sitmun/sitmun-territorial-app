@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 # For local builds
 
 # These variables are declared by travis automatically or
