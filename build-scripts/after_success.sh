@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 echo
 echo "After successful build ..."
 echo
