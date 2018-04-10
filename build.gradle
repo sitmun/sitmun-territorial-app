@@ -15,8 +15,8 @@ repositories {
 }
 
 dependencies {
-    compile 'org.sitmun:sitmun-plugin-core:1.0.0-SNAPSHOT'
-    compile 'org.sitmun:sitmun-plugin-demo:1.0.0-SNAPSHOT'
+    compile 'org.sitmun:sitmun-plugin-core:0.1.0-SNAPSHOT'
+    compile 'org.sitmun:sitmun-plugin-demo:0.1.0-SNAPSHOT'
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
 
@@ -25,7 +25,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId 'org.sitmun'
             artifactId 'sitmun-territorial-app'
-            version '1.0.0-SNAPSHOT'
+            version '0.1.0-SNAPSHOT'
 
             from components.java
         }
