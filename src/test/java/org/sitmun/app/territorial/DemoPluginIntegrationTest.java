@@ -1,4 +1,4 @@
-package org.sitmun.app.territorial.app;
+package org.sitmun.app.territorial;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +22,7 @@ public class DemoPluginIntegrationTest {
 
     @Test
     public void testDemoAPI() {
-        Greetings greetings = restTemplate.getForObject("http://localhost:" + port + "/demo/hello?name=John", Greetings.class);
+        Greetings greetings = restTemplate.getForObject("http://localhost:" + port + "/api/demo/hello?name=John", Greetings.class);
         assertThat(greetings.getMessage()).isEqualToIgnoringCase("Hello John!");
     }
     
