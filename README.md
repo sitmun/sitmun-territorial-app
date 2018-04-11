@@ -1,6 +1,6 @@
 # sitmun-territorial-app
 [![Build Status](https://api.travis-ci.org/sitmun/sitmun-territorial-app.svg?branch=master)](https://travis-ci.org/sitmun/sitmun-territorial-app)
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=sitmun-territorial-app)](https://sonarcloud.io/dashboard?id=sitmun-territorial-app)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=org.sitmun%3Asitmun-territorial-app)](https://sonarcloud.io/dashboard?id=org.sitmun%3Asitmun-territorial-app)
 
 # Build and run (local)
 Clone the repository.

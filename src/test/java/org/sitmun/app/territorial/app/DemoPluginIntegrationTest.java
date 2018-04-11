@@ -21,9 +21,9 @@ public class DemoPluginIntegrationTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void testDemoAPI() throws Exception {
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/demo/hello?name=John", Greetings.class).getMessage().equalsIgnoreCase("Hello John!"))
-                ;
+    public void testDemoAPI() {
+        Greetings greetings = restTemplate.getForObject("http://localhost:" + port + "/demo/hello?name=John", Greetings.class);
+        assertThat(greetings.getMessage()).isEqualToIgnoringCase("Hello John!");
     }
     
 }
