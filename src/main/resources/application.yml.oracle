@@ -4,9 +4,9 @@ spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
         driverClassName: oracle.jdbc.OracleDriver
-        url: jdbc:oracle:thin:@ginebra.internal.geoslab.com:49161:xe
-        username: SITMUN3
-        password: SITMUN3
+        url: jdbc:oracle:thin:@<host>:<port>:<sid>
+        username: <user>
+        password: <password>
         testWhileIdle: true
         validationQuery: SELECT 1        
         continue-on-error: true

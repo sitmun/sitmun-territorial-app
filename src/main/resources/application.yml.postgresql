@@ -4,9 +4,9 @@ spring:
     datasource:
         type: com.zaxxer.hikari.HikariDataSource    
         driverClassName: org.postgresql.Driver
-        url: jdbc:postgresql://localhost:5432/sitmun
-        username: sitmun3
-        password: sitmun3
+        url: jdbc:postgresql://<host>:<port>/<sid>
+        username: <user>
+        password: <password>
         continue-on-error: true
     jpa:
         open-in-view: false
