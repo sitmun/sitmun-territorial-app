@@ -5,7 +5,7 @@
 # in the .travis.yml. I have not found a way to make travis-ci
 # share environment variables declared in one shell script with
 # other shell scripts in the same build, so for local builds
-# they need to be declared also here.
+# they need to be declared also here. 
 # THIS IMPLIES THAT THIS LOCAL BUILD AND THE TRAVIS-CI BUILD
 # MIGHT DIFFER. TO-DO: IF THIS BUILD STRUCTURE IS KEPT, A
 # SCRIPT THAT BUILDS BOTH THIS SCRIPT AND .TRAVIS.YML FROM
@@ -31,8 +31,5 @@ if source $DIR/install-dependencies.sh; then
         source $DIR/after_script-local.sh
         exit 1
     fi
-else
-    source $DIR/after_script-local.sh
-    exit 1
 fi
-source $DIR/after_script-local.sh
+

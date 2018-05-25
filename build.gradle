@@ -13,13 +13,12 @@ apply plugin: 'jacoco'
 group = 'org.sitmun'
 version = '0.1.0-SNAPSHOT'
 
-
 repositories {
     mavenLocal()
-    mavenCentral()
+    mavenCentral()    
 }
 
-// Dependencies to other SITMUN plugins must declared all here to facilitate using them
+// Dependencies to other SITMUN plugins must be declared all here to facilitate using them
 // in different places of this script
 ext {    
     sitmunlibs = [:]
@@ -51,23 +50,37 @@ publishing {
 sonarqube {
     properties {
         property 'sonar.host.url', 'https://sonarcloud.io'
-        property 'sonar.organization', 'sitmun'     
+        property 'sonar.organization', 'sitmun'
         property 'sonar.sources', 'src/main'
-    }    
+    }
+}
+
+task cloneDependencyRepos() {
+    description = 'Clone the git repositories declared in sitmunlibs to a temporary directory.'            
+    doLast {        
+        // Create temporary directory
+        ext.plugindir = File.createTempDir().toString()    
+        sitmunlibs.each { k, v ->            
+            grgit.clone(dir: "${cloneDependencyRepos.plugindir}/${v.artifactId}", uri: "${v.gitrepo}", refToCheckout: "${v.version}")
+        }        
+    }
+}
+
+task installDependencyRepos(dependsOn: 'cloneDependencyRepos') {    
+    description = 'Install dependency repos, cleans and installs the git repositories declared in sitmunlibs in a temporary directory. Depends on cloneDependencyRepos.'        
+    doLast {        
+        // It creates a temporary GradleBuild task for each sitmun dependency in sitmunlibs
+        // and runs the specified tasks for each
+        sitmunlibs.each { k,v -> 
+            def tempTask = tasks.create(name: "install_${v.artifactId}", type: GradleBuild)
+            tempTask.buildFile = file("${cloneDependencyRepos.plugindir}/${v.artifactId}/build.gradle")            
+            tempTask.tasks = ['clean', 'install']       
+            tempTask.execute()
+        }
+        // Delete temporary directory
+        delete cloneDependencyRepos.plugindir
+    }
 }
 
 
-task install(dependsOn: 'publishToMavenLocal')
-
-// This custom task clones the git repositories of all sitmun dependencies defined in sitmunlibs
-// It requires that a PLUGIN_DIR environment variable exists and has been exported. It will
-// fail with an exception if it does not find one
-task cloneDependencyRepos {
-  doLast {
-    def plugindir = System.getenv('PLUGIN_DIR')
-    if (plugindir == null) { throw new Exception("${plugindir} is not a valid directory for the git cloning. You must define and export a PLUGIN_DIR environment variable.") }
-    sitmunlibs.each { k, v ->            
-        grgit.clone(dir: "${plugindir}/${v.artifactId}", uri: "${v.gitrepo}", refToCheckout: "${v.version}")
-    }        
-  }
-}
+task install(dependsOn: ['publishToMavenLocal', 'installDependencyRepos'])
