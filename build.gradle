@@ -59,7 +59,9 @@ task cloneDependencyRepos() {
     description = 'Clone the git repositories declared in sitmunlibs to a temporary directory.'            
     doLast {        
         // Create temporary directory
-        ext.plugindir = File.createTempDir().toString()    
+        ext.plugindirPath = java.nio.file.Files.createTempDirectory("")
+        ext.plugindir = plugindirPath.toString()
+        //ext.plugindir = File.createTempDir().toString()    
         sitmunlibs.each { k, v ->            
             grgit.clone(dir: "${cloneDependencyRepos.plugindir}/${v.artifactId}", uri: "${v.gitrepo}", refToCheckout: "${v.version}")
         }        
@@ -78,7 +80,8 @@ task installDependencyRepos(dependsOn: 'cloneDependencyRepos') {
             tempTask.execute()
         }
         // Delete temporary directory
-        delete cloneDependencyRepos.plugindir
+        //delete cloneDependencyRepos.plugindir
+        java.nio.file.Files.newOutputStream(cloneDependencyRepos.plugindirPath, java.nio.file.StandardOpenOption.DELETE_ON_CLOSE)
     }
 }
 
