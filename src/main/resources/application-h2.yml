@@ -1,6 +1,6 @@
 spring:
     application:
-        name: sitmun-territorial-app
+        name: sitmun-admin-app
     datasource:
         driverClassName: org.h2.Driver
         url: jdbc:h2:./database/samspledb;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE
@@ -17,3 +17,6 @@ spring:
             hibernate.naming:
                 physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
                 implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    h2:
+        console:
+            enabled: true
