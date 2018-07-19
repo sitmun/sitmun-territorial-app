@@ -22,12 +22,7 @@ repositories {
 // in different places of this script
 ext {    
     sitmunlibs = [:]
-<<<<<<< HEAD
-
     sitmunlibs.sitmuncore = [
-=======
-    sitmunlibs.sitmundemo = [
->>>>>>> 5773b0da76fa40e05fe25140eafb6bb16ec6f087
         gitrepo : 'https://github.com/sitmun/sitmun-plugin-core.git',
         groupId : 'org.sitmun',
         artifactId : 'sitmun-plugin-core',
@@ -38,7 +33,7 @@ ext {
 dependencies {
     sitmunlibs.each { k,v -> compile "${v.groupId}:${v.artifactId}:${v.version}" }
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-<<<<<<< HEAD
+
 	if (project.hasProperty('oracle')) {
         compile 'com.zaxxer:HikariCP:2.6.0'
         compile 'com.oracle:ojdbc7:12.1.0.2'
@@ -103,20 +98,6 @@ task installAngular(type:Exec) {
 
 */
 
-=======
-    testImplementation 'com.h2database:h2'
-
-    if (project.hasProperty('oracle')) {
-        implementation 'com.zaxxer:HikariCP:2.6.0'
-        implementation 'com.oracle:ojdbc7:12.1.0.2'
-    } else if (project.hasProperty('postgresql')) {
-        implementation 'com.zaxxer:HikariCP:2.6.0'
-        implementation 'org.postgresql:postgresql:42.2.2'
-    } else {
-        implementation 'com.h2database:h2'
-        implementation 'org.springframework.boot:spring-boot-devtools'
-    }
-}
 
 def profiles = 'h2'
 
@@ -131,7 +112,6 @@ bootRun {
     args = ["--spring.profiles.active=" + profiles]
 }
 
->>>>>>> 5773b0da76fa40e05fe25140eafb6bb16ec6f087
 
 publishing {
     publications {
@@ -186,8 +166,3 @@ task installSitmunPlugins(dependsOn: 'cloneSitmunPlugins') {
 
 task install(dependsOn: ['publishToMavenLocal', 'installSitmunPlugins'])
 
-<<<<<<< HEAD
-task install(dependsOn: ['publishToMavenLocal', 'installDependencyRepos'])
-
-=======
->>>>>>> 5773b0da76fa40e05fe25140eafb6bb16ec6f087
