@@ -17,3 +17,7 @@ bin/
 
 # Other dirs
 database/
+/libs/
+/node_modules/
+/gradle.properties
+/todo.txt

@@ -8,13 +8,27 @@ import { AngularHalModule } from 'angular-hal';
 import { HomeComponent } from './home/home.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import { SitmunPluginCoreModule,TerritoryListComponent, TerritoryEditComponent, TerritoryTypeListComponent, TerritoryTypeEditComponent, RoleListComponent, RoleEditComponent, UserListComponent, UserEditComponent} from 'sitmun-plugin-core';
+import { SitmunPluginCoreModule,LoginComponent,AccountEditComponent,AccountChangePasswordComponent} from 'sitmun-plugin-core';
     
 const appRoutes: Routes = [
   {
     path: '',
     component: HomeComponent
-  }
+  },
+
+    {
+        path: 'login',
+        component: LoginComponent
+    }
+    ,
+    {
+        path: 'account',
+        component: AccountEditComponent
+    }
+    , {
+        path: 'change-password',
+        component: AccountChangePasswordComponent
+    }
 ];
 
 @NgModule({

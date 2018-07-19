@@ -1,4 +1,9 @@
+<div class="main-container"
+	[class.example-is-mobile]="mobileQuery.matches">
 <mat-toolbar color="primary">
+<button mat-icon-button (click)="snav.toggle()">
+		<mat-icon>menu</mat-icon>
+	</button>
   
  <button mat-button [routerLink]="['']">
   	<img *ngIf="isHome" height="50px;" src="/assets/logoDiba.png">
@@ -9,9 +14,29 @@
     <span class="fill-remaining-space"></span>
     <button mat-stroked-button (click)="changeLanguage('ca')"> CA </button> <button mat-stroked-button (click)="changeLanguage('es')"> ES </button> <button mat-stroked-button (click)="changeLanguage('en')"> EN </button>    
 </mat-toolbar>
+<mat-sidenav-container class="main-sidenav-container"
+		[style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+	<mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+		[fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+	<mat-nav-list> 
+		
+		<span *ngIf="isLoggedIn()">
+		<h3 [translate]="'menu.account'">{{'menu.account'| translate}}</h3> 
+			<a href=""
+		[routerLink]="['/account']" mat-list-item>{{'account.data'| translate}}</a> <a
+		href="" [routerLink]="['/change-password']" mat-list-item
+		>{{'account.change-password'| translate}}</a>
+			<a href=""
+		(click)="logout()" mat-list-item>{{'account.closeSession'| translate}}</a> 
+		</span> 
+		<span *ngIf="!isLoggedIn()">
+			<h3><a  href="" [routerLink]="['/login']" mat-list-item>
+			{{ 'global.login'|translate}}</a></h3>
+		</span> 
+	</mat-nav-list> </mat-sidenav> <mat-sidenav-content> <router-outlet></router-outlet>
+	</mat-sidenav-content> </mat-sidenav-container>
 
-
-  <router-outlet></router-outlet>
+</div>
 
 
 

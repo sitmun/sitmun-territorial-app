@@ -22,18 +22,82 @@ repositories {
 // in different places of this script
 ext {    
     sitmunlibs = [:]
-    sitmunlibs.sitmundemo = [
-        gitrepo : 'https://github.com/sitmun/sitmun-plugin-demo.git',
+
+    sitmunlibs.sitmuncore = [
+        gitrepo : 'https://github.com/sitmun/sitmun-plugin-core.git',
         groupId : 'org.sitmun',
-        artifactId : 'sitmun-plugin-demo',
+        artifactId : 'sitmun-plugin-core',
         version : '0.1.0-SNAPSHOT'
     ]
 }
 
 dependencies {
-    sitmunlibs.each { k,v -> implementation "${v.groupId}:${v.artifactId}:${v.version}" }
+    sitmunlibs.each { k,v -> compile "${v.groupId}:${v.artifactId}:${v.version}" }
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	if (project.hasProperty('oracle')) {
+        compile 'com.zaxxer:HikariCP:2.6.0'
+        compile 'com.oracle:ojdbc7:12.1.0.2'
+    } else if (project.hasProperty('postgresql')) {
+        compile 'com.zaxxer:HikariCP:2.6.0'
+        compile 'org.postgresql:postgresql:42.2.2'
+    } else {
+        compile 'com.h2database:h2'
+        compile 'org.springframework.boot:spring-boot-devtools'
+    }
+    //compile('org.springframework.boot:spring-boot-starter-web')   
+    //compile 'com.zaxxer:HikariCP:2.6.0'
+    //compile 'com.oracle:ojdbc7:12.1.0.2'
+    //compile files('libs/ojdbc7-12.1.0.2.jar')   
+    
 }
+
+
+def webappDir = "$projectDir/src/main/webapp"
+
+sourceSets {
+	main {
+		resources {
+			srcDirs = ["$webappDir/dist", "$projectDir/src/main/resources"]
+		}
+	}
+}
+
+/*
+processResources {
+	dependsOn "buildAngular"
+}
+
+//TODO task for copying angular libraries from other plugins
+ 
+
+task buildAngular(type:Exec) {
+	// installAngular should be run prior to this task
+	//dependsOn "installAngular"
+	workingDir "$webappDir"
+	inputs.dir "$webappDir"
+	// Add task to the standard build group
+	group = BasePlugin.BUILD_GROUP
+	// ng doesn't exist as a file in windows -> ng.cmd
+	if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")){
+		commandLine "ng.cmd", "build"
+	} else {
+		commandLine "ng", "build"
+	}
+}
+
+task installAngular(type:Exec) {
+	workingDir "$webappDir"
+	inputs.dir "$webappDir"
+	group = BasePlugin.BUILD_GROUP
+	if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")){
+		commandLine "npm.cmd", "install"
+	} else {
+		commandLine "npm", "install"
+	}
+}
+
+*/
+
 
 publishing {
     publications {
@@ -88,3 +152,4 @@ task installDependencyRepos(dependsOn: 'cloneDependencyRepos') {
 
 
 task install(dependsOn: ['publishToMavenLocal', 'installDependencyRepos'])
+

@@ -15,8 +15,8 @@
     	"roles":"Role management",
     	"territoryManagement":"Territory management",
     	"territoryTypes":"Territory type management",
-    	"userManagement":"Users management"
-    	
+    	"userManagement":"Users management",
+    	"account":"Account"
 	},
 	"global":{
 		"actions":"Actions",
@@ -25,7 +25,9 @@
 		"delete":"Delete",
 		"save":"Save",
 		"cancel":"Cancel",
-		"back":"Cancel"
+		"back":"Cancel",
+		"data":"Data",
+		"login":"Login"
 	},
 	"territory":{
 		"item":"Territory",
@@ -63,6 +65,8 @@
 		"list":"Users",
 		"username":"Username",
 		"password":"Password",
+		"password-change":"Password change",
+		"confirmPassword":"Confirm password",
 		"administrator":"Administrator",
 		"blocked":"Blocked",
 		"firstName":"First name",
@@ -83,6 +87,24 @@
 		"list":"Permissions",
 		"territory":"Territory",
 		"role":"Role"
+	},
+	"account":{
+		"item":"Account",
+		"username":"Username",
+		"password":"Password",
+		"confirmPassword":"Confirm password",
+		"password-change":"Password change",
+		"firstName":"First name",
+		"lastName":"Last name",
+		"data":"Data",
+		"change-password":"Change password",
+    	"closeSession":"Close session",
+    	"password-dont-match":"The password and its confirmation do not match!",
+    	"password-change-success":"Password changed!",
+    	"update-success":"Data changed!"
+	},
+	"login":{
+		"bad-credentials":"Bad credentials"
 	}
 	,
     "SELECT_BASE_LAYER_DIALOG_TITLE": "Select the base layer",

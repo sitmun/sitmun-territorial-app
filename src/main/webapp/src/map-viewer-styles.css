@@ -115,6 +115,90 @@ button.geolocation-active {
     background-color: rgba(158,17,57,1) !important;
 }
 
+/*Overview Map*/
+.ol-overviewmap {
+    top: unset !important;
+}
+
+.ol-overviewmap .ol-overviewmap-map {
+    border: 1px solid rgba(158,17,57,1) !important;
+    height: 150px;
+    margin: 0px !important;
+    width: 150px;
+}
+
+.ol-overviewmap .ol-overviewmap-map, .ol-overviewmap button {
+    display: block !important;
+}
+
+.ol-overviewmap.ol-collapsed .ol-overviewmap-map {
+    display: none !important;
+}
+
+.ol-overviewmap-box {
+    border: 2px dotted rgba(158,17,57,1) !important;
+}
+
+.ol-overviewmap button {
+    outline: none;/*Avoid unwanted border on click on certain browsers e.g. chrome*/
+    background-color: rgba(158,17,57,1) !important;
+}
+
+.ol-overviewmap button:hover {
+    background: rgba(158,17,57,1) !important;
+}
+
+.ol-measurement {
+    background-color: transparent !important;
+}
+
+.ol-measurement button{
+    outline: none;/*Avoid unwanted border on click on certain browsers e.g. chrome*/
+    background-color: rgba(158,17,57,1) !important;   
+}
+
+.ol-measurement .tool-active {
+    background-color: rgba(215,31,83,1) !important;
+}
+
+.measurement-length {
+
+}
+
+/*Measure Tool CSS*/
+.tooltip {
+	position: relative;
+	background: rgba(0, 0, 0, 0.5);
+	border-radius: 4px;
+	color: white;
+	padding: 4px 8px;
+	opacity: 0.7;
+	white-space: nowrap;
+}
+.tooltip-measure {
+	opacity: 1;
+	font-weight: bold;
+}
+.tooltip-static {
+	background-color: rgba(158,17,57,1);
+	color: white;
+	border: 1px solid white;
+}
+.tooltip-measure:before,
+.tooltip-static:before {
+	border-top: 6px solid rgba(0, 0, 0, 0.5);
+	border-right: 6px solid transparent;
+	border-left: 6px solid transparent;
+	content: "";
+	position: absolute;
+	bottom: -6px;
+	margin-left: -7px;
+	left: 50%;
+}
+.tooltip-static:before {
+	border-top-color: rgba(158,17,57,1);
+}
+
 /* Rules for material design */
 
 /* Rules for sizing the icon. */
@@ -162,6 +246,19 @@ button.geolocation-active {
     right: 16px !important;
 }
 
+.ol-overviewmap {
+    bottom: 46px !important;
+    left: 16px !important;
+}
+
+.ol-measurement {
+    top: 202px;
+    left: 16px;
+}
+
+.measurement-area {
+    margin-top: 16px !important;
+}
 
 .ol-control button {
     min-width: 24px !important;
@@ -169,13 +266,15 @@ button.geolocation-active {
 }
 
 .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-.ol-change-baselayer button, .ol-attribution button {
+.ol-change-baselayer button, .ol-attribution button,
+.ol-measurement button, .ol-overviewmap button {
     height: 24px;
     width: 24px;
 }
 
 .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-.ol-change-baselayer button i, .ol-attribution buttion i {
+.ol-change-baselayer button i, .ol-attribution button i,
+.ol-overviewmap button i {
     font-size: 18px !important;
 }
 
@@ -222,15 +321,31 @@ button.geolocation-active {
     }
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-    .ol-change-baselayer button, .ol-attribution button {
+    .ol-change-baselayer button, .ol-attribution button,
+    .ol-measurement button, .ol-overviewmap button {
         height: 36px !important;
         width: 36px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-    .ol-change-baselayer button i, .ol-attribution buttion i {
+    .ol-change-baselayer button i, .ol-attribution button i,
+    .ol-overviewmap button i {
         font-size: 24px !important;
     }
+
+	.ol-overviewmap {
+		bottom: 46px !important;
+		left: 16px !important;
+	}
+
+	.ol-measurement {
+		top: 202px;
+		left: 16px;
+	}
+
+	.measurement-area {
+		margin-top: 6px !important;
+	}
 }
 @media all and (min-width: 360px) and (max-width: 399px) {
     .ol-zoom {
@@ -264,15 +379,31 @@ button.geolocation-active {
     }
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-    .ol-change-baselayer button, .ol-attribution button {
+    .ol-change-baselayer button, .ol-attribution button,
+    .ol-measurement button, .ol-overviewmap button {
         height: 36px !important;
         width: 36px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-    .ol-change-baselayer button i, .ol-attribution buttion i {
+    .ol-change-baselayer button i, .ol-attribution button i,
+    .ol-overviewmap button i {
         font-size: 24px !important;
     }
+
+	.ol-overviewmap {
+		bottom: 46px !important;
+		left: 16px !important;
+	}
+
+	.ol-measurement {
+		top: 202px;
+		left: 16px;
+	}
+
+	.measurement-area {
+		margin-top: 6px !important;
+	}
 }
 @media all and (min-width: 400px) and (max-width: 479px) { 
     .ol-zoom {
@@ -306,15 +437,31 @@ button.geolocation-active {
     }
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-    .ol-change-baselayer button, .ol-attribution button {
+    .ol-change-baselayer button, .ol-attribution button,
+    .ol-measurement button, .ol-overviewmap button {
         height: 36px !important;
         width: 36px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-    .ol-change-baselayer button i, .ol-attribution buttion i {
+    .ol-change-baselayer button i, .ol-attribution button i,
+    .ol-overviewmap button i {
         font-size: 24px !important;
     }
+
+	.ol-overviewmap {
+		bottom: 46px !important;
+		left: 16px !important;
+	}
+
+	.ol-measurement {
+		top: 202px;
+		left: 16px;
+	}
+
+	.measurement-area {
+		margin-top: 6px !important;
+	}
 }
 @media all and (min-width: 480px) and (max-width: 599px) { 
     .ol-zoom {
@@ -354,15 +501,31 @@ button.geolocation-active {
     }
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-    .ol-change-baselayer button, .ol-attribution button {
+    .ol-change-baselayer button, .ol-attribution button,
+    .ol-measurement button, .ol-overviewmap button {
         height: 36px !important;
         width: 36px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-    .ol-change-baselayer button i, .ol-attribution buttion i {
+    .ol-change-baselayer button i, .ol-attribution button i,
+    .ol-overviewmap button i {
         font-size: 24px !important;
     }
+
+	.ol-overviewmap {
+		bottom: 46px !important;
+		left: 16px !important;
+	}
+
+	.ol-measurement {
+		top: 202px;
+		left: 16px;
+	}
+
+	.measurement-area {
+		margin-top: 6px !important;
+	}
 }
 @media all and (min-width: 600px) and (max-width: 719px) { 
     .ol-zoom {
@@ -401,15 +564,31 @@ button.geolocation-active {
     }
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-    .ol-change-baselayer button, .ol-attribution button {
+    .ol-change-baselayer button, .ol-attribution button,
+    .ol-measurement button, .ol-overviewmap button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-    .ol-change-baselayer button i, .ol-attribution buttion i {
+    .ol-change-baselayer button i, .ol-attribution button i,
+    .ol-overviewmap button i {
         font-size: 18px !important;
     }
+
+	.ol-overviewmap {
+		bottom: 46px !important;
+		left: 16px !important;
+	}
+
+	.ol-measurement {
+		top: 202px;
+		left: 16px;
+	}
+
+	.measurement-area {
+		margin-top: 16px !important;
+	}
 }
 @media all and (min-width: 720px) and (max-width: 839px) { 
     .ol-zoom {
@@ -448,15 +627,31 @@ button.geolocation-active {
     }
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-    .ol-change-baselayer button, .ol-attribution button {
+    .ol-change-baselayer button, .ol-attribution button,
+    .ol-measurement button, .ol-overviewmap button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-    .ol-change-baselayer button i, .ol-attribution buttion i {
+    .ol-change-baselayer button i, .ol-attribution button i,
+    .ol-overviewmap button i {
         font-size: 18px !important;
     }
+
+	.ol-overviewmap {
+		bottom: 54px !important;
+		left: 24px !important;
+	}
+
+	.ol-measurement {
+		top: 200px;
+		left: 24px;
+	}
+
+	.measurement-area {
+		margin-top: 24px !important;
+	}
 }
 @media all and (min-width: 840px) and (max-width: 959px) { 
     .ol-zoom {
@@ -495,15 +690,31 @@ button.geolocation-active {
     }
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-    .ol-change-baselayer button, .ol-attribution button {
+    .ol-change-baselayer button, .ol-attribution button,
+    .ol-measurement button, .ol-overviewmap button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-    .ol-change-baselayer button i, .ol-attribution buttion i {
+    .ol-change-baselayer button i, .ol-attribution button i,
+    .ol-overviewmap button i {
         font-size: 18px !important;
     }
+
+	.ol-overviewmap {
+		bottom: 54px !important;
+		left: 24px !important;
+	}
+
+	.ol-measurement {
+		top: 200px;
+		left: 24px;
+	}
+
+	.measurement-area {
+		margin-top: 24px !important;
+	}
 }
 @media all and (min-width: 960px) and (max-width: 1023px) { 
     .ol-zoom {
@@ -542,15 +753,31 @@ button.geolocation-active {
     }
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-    .ol-change-baselayer button, .ol-attribution button {
+    .ol-change-baselayer button, .ol-attribution button,
+    .ol-measurement button, .ol-overviewmap button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-    .ol-change-baselayer button i, .ol-attribution buttion i {
+    .ol-change-baselayer button i, .ol-attribution button i,
+    .ol-overviewmap button i {
         font-size: 18px !important;
     }
+
+	.ol-overviewmap {
+		bottom: 54px !important;
+		left: 24px !important;
+	}
+
+	.ol-measurement {
+		top: 200px;
+		left: 24px;
+	}
+
+	.measurement-area {
+		margin-top: 24px !important;
+	}
 }
 
 @media all and (min-width: 1024px) and (max-width: 1279px) { 
@@ -591,15 +818,31 @@ button.geolocation-active {
     }
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-    .ol-change-baselayer button, .ol-attribution button {
+    .ol-change-baselayer button, .ol-attribution button,
+    .ol-measurement button, .ol-overviewmap button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-    .ol-change-baselayer button i, .ol-attribution buttion i {
+    .ol-change-baselayer button i, .ol-attribution button i,
+    .ol-overviewmap button i {
         font-size: 18px !important;
     }
+
+	.ol-overviewmap {
+		bottom: 54px !important;
+		left: 24px !important;
+	}
+
+	.ol-measurement {
+		top: 200px;
+		left: 24px;
+	}
+
+	.measurement-area {
+		margin-top: 24px !important;
+	}
 }
 @media all and (min-width: 1280px) and (max-width: 1439px) { 
     .ol-zoom {
@@ -639,15 +882,31 @@ button.geolocation-active {
     }
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-    .ol-change-baselayer button, .ol-attribution button {
+    .ol-change-baselayer button, .ol-attribution button,
+    .ol-measurement button, .ol-overviewmap button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-    .ol-change-baselayer button i, .ol-attribution buttion i {
+    .ol-change-baselayer button i, .ol-attribution button i,
+    .ol-overviewmap button i {
         font-size: 18px !important;
     }
+
+	.ol-overviewmap {
+		bottom: 54px !important;
+		left: 24px !important;
+	}
+
+	.ol-measurement {
+		top: 200px;
+		left: 24px;
+	}
+
+	.measurement-area {
+		margin-top: 24px !important;
+	}
 }
 @media all and (min-width: 1440px) and (max-width: 1599px) { 
     .ol-zoom {
@@ -687,15 +946,31 @@ button.geolocation-active {
     }
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-    .ol-change-baselayer button, .ol-attribution button {
+    .ol-change-baselayer button, .ol-attribution button,
+    .ol-measurement button, .ol-overviewmap button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-    .ol-change-baselayer button i, .ol-attribution buttion i {
+    .ol-change-baselayer button i, .ol-attribution button i,
+    .ol-overviewmap button i {
         font-size: 18px !important;
     }
+
+	.ol-overviewmap {
+		bottom: 54px !important;
+		left: 24px !important;
+	}
+
+	.ol-measurement {
+		top: 200px;
+		left: 24px;
+	}
+
+	.measurement-area {
+		margin-top: 24px !important;
+	}
 }
 @media all and (min-width: 1600px) and (max-width: 1919px) { 
     .ol-zoom {
@@ -735,15 +1010,31 @@ button.geolocation-active {
     }
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-    .ol-change-baselayer button, .ol-attribution button {
+    .ol-change-baselayer button, .ol-attribution button,
+    .ol-measurement button, .ol-overviewmap button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-    .ol-change-baselayer button i, .ol-attribution buttion i {
+    .ol-change-baselayer button i, .ol-attribution button i,
+    .ol-overviewmap button i {
         font-size: 18px !important;
     }
+
+	.ol-overviewmap {
+		bottom: 54px !important;
+		left: 24px !important;
+	}
+
+	.ol-measurement {
+		top: 200px;
+		left: 24px;
+	}
+
+	.measurement-area {
+		margin-top: 24px !important;
+	}
 }
 @media all and (min-width: 1920px) {
     .ol-zoom {
@@ -783,14 +1074,30 @@ button.geolocation-active {
     }
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
-    .ol-change-baselayer button, .ol-attribution button {
+    .ol-change-baselayer button, .ol-attribution button,
+    .ol-measurement button, .ol-overviewmap button {
         height: 24px;
         width: 24px;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
-    .ol-change-baselayer button i, .ol-attribution buttion i {
+    .ol-change-baselayer button i, .ol-attribution button i,
+    .ol-overviewmap button i {
         font-size: 18px !important;
     }
+
+	.ol-overviewmap {
+		bottom: 54px !important;
+		left: 24px !important;
+	}
+
+	.ol-measurement {
+		top: 200px;
+		left: 24px;
+	}
+
+	.measurement-area {
+		margin-top: 24px !important;
+	}
 
 }

@@ -15,7 +15,8 @@
     	"users":"Usuarios",
     	"roles":"Gestión de Roles",
     	"territoryManagement":"Gestión de Territorios",
-    	"userManagement":"Gestión de Usuarios"
+    	"userManagement":"Gestión de Usuarios",
+        "account":"Cuenta"
     	
 	},
 
@@ -26,7 +27,9 @@
 		"delete":"Eliminar",
 		"save":"Guardar",
 		"cancel":"Cancelar",
-		"back":"Cancelar"
+		"back":"Cancelar",
+		"data":"Data",
+		"login":"Inicio sesión"
 	},
 	"territory":{
 		"item":"Territorio",
@@ -63,11 +66,13 @@
 		"data":"Datos",
 		"list":"Usuarios",
 		"username":"Username",
-		"password":"Password",
+		"password":"Contraseña",
+		"password-change":"Cambio de contraseña",
+		"confirmPassword":"Confirmar contraseña",
 		"administrator":"Administrador",
 		"blocked":"Bloqueado",
 		"firstName":"Nombre",
-		"lastName":"Apellido",
+		"lastName":"Apellidos",
 		"positions":"Cargos",
 		"permissions":"Permisos"
 	},
@@ -84,6 +89,24 @@
 		"list":"Permisos",
 		"territory":"Territorios",
 		"role":"Rol"
+	},
+	"account":{
+		"item":"Cuenta",
+		"username":"Nombre de usuario",
+		"password":"Contraseña",
+		"confirmPassword":"Confirmar contraseña",
+		"password-change":"Cambio de contraseña",
+		"firstName":"Nombre",
+		"lastName":"Apellidos",
+		"data":"Datos",
+		"change-password":"Cambio de contraseña",
+    	"closeSession":"Cerrar sesión",
+    	"password-dont-match":"Contraseña y confirmación no coinciden!",
+    	"password-change-success":"Contraseña cambiada!",
+    	"update-success":"Datos cambiados!"
+	},
+	"login":{
+		"bad-credentials":"Nombre de usuario y/o contraseña incorrectos"
 	},
 	"SELECT_BASE_LAYER_DIALOG_TITLE": "Seleccione la capa base",
     "MAP_BASE_LAYER_OPTION": "Mapa",

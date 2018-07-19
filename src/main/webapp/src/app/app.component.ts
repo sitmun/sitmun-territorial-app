@@ -1,6 +1,7 @@
 import { Component,OnInit,ChangeDetectorRef,OnDestroy  } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {TranslateService} from '@ngx-translate/core';
+import {Principal,LoginService} from 'sitmun-plugin-core';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +13,11 @@ export class AppComponent implements OnInit, OnDestroy {
   mobileQuery: MediaQueryList;
   translate;
   isHome = true;
+    currentAccount : any;
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public trans: TranslateService) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public trans: TranslateService,public principal:Principal,public loginService:LoginService ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -38,7 +40,18 @@ export class AppComponent implements OnInit, OnDestroy {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
   
-  ngOnInit() {
+  logout(){
+    this.loginService.logout();
   }
-
+    
+  isLoggedIn(){
+    return this.principal.isAuthenticated();
+  }
+  
+  ngOnInit() {
+      
+      this.principal.identity().then((account) => {
+                 this.currentAccount = account;
+   });
+  }   
 }

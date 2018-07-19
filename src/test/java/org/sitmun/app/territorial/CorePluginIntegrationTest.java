@@ -27,9 +27,9 @@ public class CorePluginIntegrationTest {
     
     @Test
     public void testCoreAPI() throws Exception {
-        mvc.perform(get("/api/usuarios")
+        mvc.perform(get("/api/users")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().is(401))
                 ;
     }
 }
