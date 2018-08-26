@@ -21,3 +21,5 @@ database/
 /node_modules/
 /gradle.properties
 /todo.txt
+package-lock.json
+dist

@@ -1,170 +1,190 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    jcenter()
+    maven { url "http://repo.spring.io/plugins-release" }
+    maven { url "https://plugins.gradle.org/m2/" }
+  }
+  dependencies {
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}"
+  }
+}
+
+
 plugins {
-    id 'org.springframework.boot' version '1.5.8.RELEASE'
-    id 'org.sonarqube' version '2.6'
-    id 'org.ajoberstar.grgit' version '2.2.0'
+  id "org.sonarqube" version "2.6.2"
+  id "com.moowork.node" version "1.2.0"
+  id 'org.ajoberstar.grgit' version '2.2.0'
 }
 
 apply plugin: 'java'
-apply plugin: 'idea'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 apply plugin: 'maven-publish'
-apply plugin: 'application'
 apply plugin: 'jacoco'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+apply plugin: 'idea'
+
 
 group = 'org.sitmun'
-version = '0.1.0-SNAPSHOT'
+version = "${sitmun_version}"
 
 repositories {
-    mavenLocal()
-    mavenCentral()    
+  mavenLocal()
+  mavenCentral()
 }
 
 // Dependencies to other SITMUN plugins must be declared all here to facilitate using them
 // in different places of this script
-ext {    
-    sitmunlibs = [:]
-    sitmunlibs.sitmuncore = [
-        gitrepo : 'https://github.com/sitmun/sitmun-plugin-core.git',
-        groupId : 'org.sitmun',
-        artifactId : 'sitmun-plugin-core',
-        version : '0.1.0-SNAPSHOT'
-    ]
+ext {
+  sitmunlibs = [:]
+  sitmunlibs.sitmuncore = [
+    gitrepo   : 'https://github.com/sitmun/sitmun-plugin-core.git',
+    groupId   : 'org.sitmun',
+    artifactId: 'sitmun-plugin-core',
+    version   : 'develop'
+  ]
 }
 
 dependencies {
-    sitmunlibs.each { k,v -> compile "${v.groupId}:${v.artifactId}:${v.version}" }
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'com.h2database:h2'
+  sitmunlibs.each { k, v -> compile "${v.groupId}:${v.artifactId}:${v.version}" }
 
+  if (project.hasProperty('oracle')) {
+    compile "com.zaxxer:HikariCP:${hikaricp_version}"
+    compile "com.oracle:ojdbc7:${ojdbc7_version}"
+  } else if (project.hasProperty('postgresql')) {
+    compile "com.zaxxer:HikariCP:${hikaricp_version}"
+    compile "org.postgresql:postgresql:${postgresql_version}"
+  } else {
+    compile 'com.h2database:h2'
+    compile 'org.springframework.boot:spring-boot-devtools'
+  }
 
-	if (project.hasProperty('oracle')) {
-        compile 'com.zaxxer:HikariCP:2.6.0'
-        compile 'com.oracle:ojdbc7:12.1.0.2'
-    } else if (project.hasProperty('postgresql')) {
-        compile 'com.zaxxer:HikariCP:2.6.0'
-        compile 'org.postgresql:postgresql:42.2.2'
-    } else {
-        compile 'com.h2database:h2'
-        compile 'org.springframework.boot:spring-boot-devtools'
-    }
-    //compile('org.springframework.boot:spring-boot-starter-web')   
-    //compile 'com.zaxxer:HikariCP:2.6.0'
-    //compile 'com.oracle:ojdbc7:12.1.0.2'
-    //compile files('libs/ojdbc7-12.1.0.2.jar')   
-    
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'com.h2database:h2'
 }
-
-
-def webappDir = "$projectDir/src/main/webapp"
-
-sourceSets {
-	main {
-		resources {
-			srcDirs = ["$webappDir/dist", "$projectDir/src/main/resources"]
-		}
-	}
-}
-
-/*
-processResources {
-	dependsOn "buildAngular"
-}
-
-//TODO task for copying angular libraries from other plugins
- 
-
-task buildAngular(type:Exec) {
-	// installAngular should be run prior to this task
-	//dependsOn "installAngular"
-	workingDir "$webappDir"
-	inputs.dir "$webappDir"
-	// Add task to the standard build group
-	group = BasePlugin.BUILD_GROUP
-	// ng doesn't exist as a file in windows -> ng.cmd
-	if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")){
-		commandLine "ng.cmd", "build"
-	} else {
-		commandLine "ng", "build"
-	}
-}
-
-task installAngular(type:Exec) {
-	workingDir "$webappDir"
-	inputs.dir "$webappDir"
-	group = BasePlugin.BUILD_GROUP
-	if (System.getProperty("os.name").toUpperCase().contains("WINDOWS")){
-		commandLine "npm.cmd", "install"
-	} else {
-		commandLine "npm", "install"
-	}
-}
-
-*/
-
 
 def profiles = 'h2'
 
 bootRun {
-    if (project.hasProperty('h2')) {
-        profiles = 'h2'
-    } else if (project.hasProperty('oracle')) {
-        profiles = 'oracle'
-    } else if (project.hasProperty('postgresql')) {
-        profiles = 'postgresql'
-    }
-    args = ["--spring.profiles.active=" + profiles]
+  if (project.hasProperty('h2')) {
+    profiles = 'h2'
+  } else if (project.hasProperty('oracle')) {
+    profiles = 'oracle'
+  } else if (project.hasProperty('postgresql')) {
+    profiles = 'postgresql'
+  }
+  args = ["--spring.profiles.active=" + profiles]
 }
 
-
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId group
-            artifactId 'sitmun-territorial-app'
-            version version
+  publications {
+    mavenJava(MavenPublication) {
+      groupId group
+      artifactId 'sitmun-terrorial-app'
+      version version
 
-            from components.java
-        }
+      from components.java
     }
+  }
 }
 
 sonarqube {
-    properties {
-        property 'sonar.host.url', 'https://sonarcloud.io'
-        property 'sonar.organization', 'sitmun'
-        property 'sonar.sources', 'src/main'
-    }
+  properties {
+    property 'sonar.host.url', 'https://sonarcloud.io'
+    property 'sonar.organization', 'sitmun'
+  }
 }
 
-task cloneSitmunPlugins() {
-    description = 'Clone the git repositories declared in sitmunlibs to a temporary directory.'
-    doLast {
-        // Create temporary directory
-        ext.plugindir = File.createTempDir().toString()
-        sitmunlibs.each { k, v ->
-            grgit.clone(dir: "${cloneSitmunPlugins.plugindir}/${v.artifactId}", uri: "${v.gitrepo}", refToCheckout: "${v.version}")
-        }
-    }
+node {
+  version = "${node_version}"
+  npmVersion = "${npm_version}"
+  yarnVersion = "${yarn_version}"
+  download = "${node_download}"
 }
 
-task installSitmunPlugins(dependsOn: 'cloneSitmunPlugins') {
-    description = 'Install dependency repos, cleans and installs the git repositories declared in sitmunlibs in a temporary directory. Depends on cloneSitmunPlugins.'
-    doLast {
-        // It creates a temporary GradleBuild task for each sitmun dependency in sitmunlibs
-        // and runs the specified tasks for each
-        sitmunlibs.each { k,v ->
-            def tempTask = tasks.create(name: "install_${v.artifactId}", type: GradleBuild)
-            tempTask.buildFile = file("${cloneSitmunPlugins.plugindir}/${v.artifactId}/build.gradle")
-            tempTask.tasks = ['clean', 'install']
-            tempTask.execute()
-        }
-        // Delete temporary directory
-        try {
-            delete cloneSitmunPlugins.plugindir
-        } catch (Exception e) {
-            println("Temp directory ${cloneSitmunPlugins.plugindir} was not deleted. You can safely delete it afterwards.")
-        }
+sourceSets {
+  main {
+    resources {
+      srcDirs = ["$projectDir/dist", "$projectDir/src/main/resources"]
     }
+  }
 }
 
-task install(dependsOn: ['publishToMavenLocal', 'installSitmunPlugins'])
+task clonePlugins {
+  description = 'Clone SITMUN plugins from GitHub".'
+  def taskDir = file("$buildDir/plugins-src")
+  outputs.dir taskDir
+  enabled = !taskDir.exists()
+  doLast {
+    taskDir.mkdirs()
+    sitmunlibs.each { k, v ->
+      grgit.clone {
+        dir = "$taskDir/${v.artifactId}"
+        uri = "${v.gitrepo}"
+        refToCheckout = "${v.version}"
+      }
+    }
+  }
+}
 
+task prepareNode {
+  description = 'Prepare the NPM environment.'
+  def taskDir = file("node_modules")
+  outputs.dir taskDir
+  enabled = !taskDir.exists()
+  doLast {
+    def rebuild = tasks.create(name: "npmRebuild", type: NpmTask)
+    rebuild.args = ['rebuild', 'node-sass']
+    rebuild.execute()
+    def install = tasks.create(name: "npmInstallToo", type: NpmTask)
+    install.args = ['install']
+    install.execute()
+  }
+}
+
+task installPlugins(dependsOn: [clonePlugins, prepareNode]) {
+  description = 'Install Plugins.'
+  def taskDir = file("$buildDir/plugins-modules")
+  def cloneDir = file("$buildDir/plugins-src")
+  outputs.dir taskDir
+  enabled = !taskDir.exists()
+  doLast {
+    taskDir.mkdirs()
+    // It creates a temporary GradleBuild task for each sitmun dependency in sitmunlibs
+    // and runs the specified tasks for each
+    sitmunlibs.each { k,v ->
+      def tempTask = tasks.create(name: "install_module_${v.artifactId}", type: GradleBuild)
+      tempTask.buildFile = file("$cloneDir/${v.artifactId}/build.gradle")
+      tempTask.startParameter.projectProperties['customVersion'] = v.version
+      tempTask.startParameter.projectProperties['downloadNode'] = false
+      tempTask.tasks = ['clean','install']
+      tempTask.execute()
+      copy  {
+        from "$cloneDir/${v.artifactId}/dist"
+        into "node_modules"
+      }
+    }
+  }
+}
+
+task buildApp(dependsOn: installPlugins) {
+  doLast {
+    def build = tasks.create(name: "buildAppToo", type: NpmTask)
+    build.args = ['run-script', 'build']
+    build.execute()
+  }
+}
+
+processResources.dependsOn(buildApp)
+
+task install(dependsOn: publishToMavenLocal)
+
+clean {
+  delete "node_modules"
+  delete "dist"
+  delete "database"
+}

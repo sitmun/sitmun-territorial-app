@@ -29,7 +29,7 @@ public class CorePluginIntegrationTest {
     public void testCoreAPI() throws Exception {
         mvc.perform(get("/api/users")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isUnauthorized())
                 ;
     }
 }

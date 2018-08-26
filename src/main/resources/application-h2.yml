@@ -3,7 +3,7 @@ spring:
         name: sitmun-admin-app
     datasource:
         driverClassName: org.h2.Driver
-        url: jdbc:h2:./database/samspledb;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE
+        url: jdbc:h2:./database/sitmundb;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=FALSE
         continue-on-error: true
     jpa:
         show-sql: true
