@@ -179,7 +179,6 @@ task buildApp(dependsOn: installPlugins) {
   }
 }
 
-compileJava.dependsOn(installPlugins)
 processResources.dependsOn(buildApp)
 
 task install(dependsOn: publishToMavenLocal)
