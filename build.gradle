@@ -137,10 +137,10 @@ task prepareNode {
   outputs.dir taskDir
   enabled = !taskDir.exists()
   doLast {
-    def rebuild = tasks.create(name: "npmRebuild", type: NpmTask)
+    def rebuild = tasks.create(name: "npmRebuild", type: NpmTask, dependsOn: 'npmInstall')
     rebuild.args = ['rebuild', 'node-sass']
     rebuild.execute()
-    def install = tasks.create(name: "npmInstallToo", type: NpmTask)
+    def install = tasgks.create(name: "npmInstallToo", type: NpmTask)
     install.args = ['install']
     install.execute()
   }
