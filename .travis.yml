@@ -2,9 +2,9 @@ addons:
   sonarcloud:
     organization: sitmun
 
-before_install: ./build-scripts/install-dependencies.sh
-
-script: ./build-scripts/script.sh
+script:
+  - ./build-scripts/script.sh
+  - sonar-scanner
 
 after_success: ./build-scripts/after_success.sh
 

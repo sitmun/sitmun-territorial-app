@@ -24,12 +24,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Using source makes all of them run in the same shell process
 # so they can share functions and variables
 
-if source $DIR/install-dependencies.sh; then
-    if source $DIR/script.sh; then
-        source $DIR/after_success.sh                
-    else
-        source $DIR/after_script-local.sh
-        exit 1
-    fi
+if source $DIR/script.sh; then
+  source $DIR/after_success.sh
+else
+  source $DIR/after_script-local.sh
+  exit 1
 fi
 

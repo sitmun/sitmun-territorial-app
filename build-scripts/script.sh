@@ -4,7 +4,7 @@ echo "Building script ..."
 echo
 
 cd $TRAVIS_BUILD_DIR
-if ./gradlew assemble check; then
+if ./gradlew clean assemble check; then
     echo
 else
     echo
