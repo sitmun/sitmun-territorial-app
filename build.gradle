@@ -140,7 +140,7 @@ task prepareNode(dependsOn: 'npmInstall') {
     def rebuild = tasks.create(name: "npmRebuild", type: NpmTask)
     rebuild.args = ['rebuild', 'node-sass']
     rebuild.execute()
-    def install = tasgks.create(name: "npmInstallToo", type: NpmTask)
+    def install = tasks.create(name: "npmInstallToo", type: NpmTask)
     install.args = ['install']
     install.execute()
   }
