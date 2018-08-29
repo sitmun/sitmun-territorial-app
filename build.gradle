@@ -7,6 +7,7 @@ buildscript {
   }
   dependencies {
     classpath "org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}"
+    classpath "gradle.plugin.com.palantir.gradle.docker:gradle-docker:${gradle_docker_version}"
   }
 }
 
@@ -25,8 +26,11 @@ apply plugin: 'maven-publish'
 apply plugin: 'jacoco'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.palantir.docker'
+apply plugin: 'com.palantir.docker-run'
 
 apply plugin: 'idea'
+apply plugin: 'eclipse'
 
 
 group = 'org.sitmun'
@@ -188,4 +192,19 @@ clean {
   delete "node_modules"
   delete "dist"
   delete "database"
+}
+
+docker {
+  def projectJar = "${project.name}-${project.version}.jar"
+  dockerfile file("src/main/docker/Dockerfile")
+  name "${project.group}/${project.name}:${project.version}".toLowerCase()
+  copySpec.from("${buildDir}/libs/").into(".")
+  buildArgs(['JAR_FILE': projectJar])
+}
+
+dockerRun {
+  name project.name
+  image "${project.group}/${project.name}:${project.version}".toLowerCase()
+  clean true
+  ports '8088:8088'
 }
