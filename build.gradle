@@ -1,37 +1,25 @@
-buildscript {
-  repositories {
-    mavenLocal()
-    jcenter()
-    maven { url "http://repo.spring.io/plugins-release" }
-    maven { url "https://plugins.gradle.org/m2/" }
-  }
-  dependencies {
-    classpath "org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}"
-    classpath "gradle.plugin.com.palantir.gradle.docker:gradle-docker:${gradle_docker_version}"
-  }
-}
-
-
 plugins {
   id "org.sonarqube" version "2.6.2"
   id "com.moowork.node" version "1.2.0"
-  id 'org.ajoberstar.grgit' version '2.2.0'
+  id "org.ajoberstar.grgit" version "2.2.0"
+  id "org.springframework.boot" version "1.5.8.RELEASE"
+  id "com.palantir.docker" version "0.20.1"
 }
 
 apply plugin: 'java'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+def targetJavaVersion = JavaVersion.VERSION_1_8;
+sourceCompatibility = "${targetJavaVersion}"
+targetCompatibility = "${targetJavaVersion}"
+
 
 apply plugin: 'maven-publish'
 apply plugin: 'jacoco'
-apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.palantir.docker'
 apply plugin: 'com.palantir.docker-run'
 
 apply plugin: 'idea'
 apply plugin: 'eclipse'
-
 
 group = 'org.sitmun'
 version = "${sitmun_version}"
@@ -84,6 +72,19 @@ bootRun {
   args = ["--spring.profiles.active=" + profiles]
 }
 
+task checkJavaVersion {
+    if (!JavaVersion.current().equals(targetJavaVersion)) {
+        String message = """
+ERROR: Java ${targetJavaVersion} JDK required but ${JavaVersion.current()} found. 
+SOLUTION: 
+  a) Point JAVA_HOME to a ${targetJavaVersion} JDK and then run gradle, or
+  b) Run ./gradlew -Dorg.gradle.java.home=/path_to_jdk_${targetJavaVersion}_directory"""
+        throw new GradleException(message)
+    }
+}
+
+compileJava.dependsOn checkJavaVersion
+
 publishing {
   publications {
     mavenJava(MavenPublication) {
@@ -103,13 +104,6 @@ sonarqube {
   }
 }
 
-node {
-  version = "${node_version}"
-  npmVersion = "${npm_version}"
-  yarnVersion = "${yarn_version}"
-  download = "${node_download}"
-}
-
 sourceSets {
   main {
     resources {
@@ -118,16 +112,17 @@ sourceSets {
   }
 }
 
+def cloneDir = file("$buildDir/plugins-src")
+
 task clonePlugins {
   description = 'Clone SITMUN plugins from GitHub".'
-  def taskDir = file("$buildDir/plugins-src")
-  outputs.dir taskDir
-  enabled = !taskDir.exists()
   doLast {
-    taskDir.mkdirs()
+    if (!cloneDir.exists()) {
+      mkdir cloneDir
+    }
     sitmunlibs.each { k, v ->
       grgit.clone {
-        dir = "$taskDir/${v.artifactId}"
+        dir = "$cloneDir/${v.artifactId}"
         uri = "${v.gitrepo}"
         refToCheckout = "${v.version}"
       }
@@ -135,47 +130,40 @@ task clonePlugins {
   }
 }
 
-task prepareNode(dependsOn: 'npmInstall') {
-  description = 'Prepare the NPM environment.'
-  def taskDir = file("node_modules")
-  outputs.dir taskDir
-  enabled = !taskDir.exists()
-  doLast {
-    def rebuild = tasks.create(name: "npmRebuild", type: NpmTask)
-    rebuild.args = ['rebuild', 'node-sass']
-    rebuild.execute()
-    def install = tasks.create(name: "npmInstallToo", type: NpmTask)
-    install.args = ['install']
-    install.execute()
-  }
-}
+clonePlugins.mustRunAfter clean
 
-task installPlugins(dependsOn: [clonePlugins, prepareNode]) {
+task installPlugins(dependsOn: clonePlugins) {
   description = 'Install Plugins.'
-  def taskDir = file("$buildDir/plugins-modules")
-  def cloneDir = file("$buildDir/plugins-src")
-  outputs.dir taskDir
-  enabled = !taskDir.exists()
   doLast {
-    taskDir.mkdirs()
     // It creates a temporary GradleBuild task for each sitmun dependency in sitmunlibs
     // and runs the specified tasks for each
     sitmunlibs.each { k,v ->
       def tempTask = tasks.create(name: "install_module_${v.artifactId}", type: GradleBuild)
-      tempTask.buildFile = file("$cloneDir/${v.artifactId}/build.gradle")
-      tempTask.startParameter.projectProperties['customVersion'] = v.version
-      tempTask.startParameter.projectProperties['downloadNode'] = false
-      tempTask.tasks = ['clean','install']
+      tempTask.dir = file("$cloneDir/${v.artifactId}")
+      tempTask.startParameter.projectProperties["customVersion"] = v.version
+      tempTask.tasks = [ "install" ]
       tempTask.execute()
-      copy  {
-        from "$cloneDir/${v.artifactId}/dist"
-        into "node_modules"
-      }
     }
   }
 }
 
-task buildApp(dependsOn: installPlugins) {
+installPlugins.mustRunAfter clonePlugins
+
+task installModules(dependsOn: [installPlugins, npmInstall]) {
+  doLast {
+    sitmunlibs.values().each {
+      def sourceDir = "$cloneDir/${it.artifactId}/dist" 
+      ant.copy(todir: "node_modules") {
+        fileset(dir: sourceDir)
+      } 
+    }
+  }
+}
+
+installModules.mustRunAfter installPlugins
+installModules.mustRunAfter npmInstall
+
+task buildApp(dependsOn: installModules) {
   doLast {
     def build = tasks.create(name: "buildAppToo", type: NpmTask)
     build.args = ['run-script', 'build']
@@ -183,8 +171,13 @@ task buildApp(dependsOn: installPlugins) {
   }
 }
 
-compileJava.dependsOn(installPlugins)
-processResources.dependsOn(buildApp)
+buildApp.mustRunAfter installModules
+
+compileJava.dependsOn installPlugins 
+compileJava.mustRunAfter installPlugins 
+
+processResources.dependsOn buildApp
+processResources.mustRunAfter buildApp
 
 task install(dependsOn: publishToMavenLocal)
 
