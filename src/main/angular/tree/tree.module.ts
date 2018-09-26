@@ -4,7 +4,7 @@ import {AppComponent} from '../app/app.component';
 import {treeComponent} from './tree.component';
 
 import {MapComponent, MapConfigurationManagerService, 
-        Layer, LayerConfiguration, LayerGroup} from 'sitmun-plugin-core';
+        Layer, LayerConfiguration, LayerGroup, OptionalParameter} from 'sitmun-plugin-core';
 
 //Angular js imports
 import {GEOADMIN_MODULE_NAME} from '../geoadmin-module/geoadmin-module';
@@ -73,8 +73,10 @@ module.controller("GaTreeMapConfigurationController",
       }
       if (layer.tiled) {
           //If no tile size is defined the default will be used
-          //FIXME add tileSize support on the map component
-          //layer.tileSize = geoadminLayer.tileSize;
+          if (geoadminLayer.tileSize) {
+            layer.tileHeight = geoadminLayer.tileSize;
+            layer.tileWidth = geoadminLayer.tileSize;
+          }
       }
       if (geoadminLayer.desc != undefined) {
         layer.desc = geoadminLayer.desc;
@@ -91,18 +93,9 @@ module.controller("GaTreeMapConfigurationController",
       if (geoadminLayer.extent != undefined) {
         layer.extent = geoadminLayer.extent;
       }
-      //FIXME add sld support in the map component
-      /*
-      if (geoadminLayer.sld != undefined) {
-          layer.sld = geoadminLayer.sld;
-      }
-      */
-      //FIXME add optional parameters support in the map component
-      /*
       if (geoadminLayer.optionalParameters != undefined) {
           layer.optionalParameters = geoadminLayer.optionalParameters;
       }
-      */
 
       return layer;
     }
@@ -114,6 +107,7 @@ module.controller("GaTreeMapConfigurationController",
         var parameterList;/*Array<ServiceParameter>*/
         var parameter;/*ServiceParameter*/
         var parameterName:string;
+        var optionalParameter: OptionalParameter;
 
         layerConfig = {};
 
@@ -186,9 +180,6 @@ module.controller("GaTreeMapConfigurationController",
                   case 'attributionurl':
                                       layerConfig.attributionUrl = parameter.value;
                                       break;
-                  case 'sld':
-                                      layerConfig.sld = parameter.value;
-                                      break;
                   case 'tiled':
                                       var parsedValue = parameter.value.toLowerCase();
                                       layerConfig.singleTile = (parsedValue != "true");
@@ -203,12 +194,12 @@ module.controller("GaTreeMapConfigurationController",
                                       }
                                       break;
                   default:            if (!layerConfig.optionalParameters) {
-                                        layerConfig.optionalParameters = [];
+                                        layerConfig.optionalParameters = new Array<OptionalParameter>();
                                       }
-                                      layerConfig.optionalParameters.push({
-                                          param: parameterName,
-                                          value: parameter.value
-                                      });
+                                      optionalParameter = new OptionalParameter();
+                                      optionalParameter.key = parameter.name;
+                                      optionalParameter.value = parameter.value;
+                                      layerConfig.optionalParameters.push(optionalParameter);
                 }
 
               }

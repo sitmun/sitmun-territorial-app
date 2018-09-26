@@ -420,7 +420,7 @@ export class HomeComponent implements OnInit {
 
   //TODO FIXME receive the default configuration from the ap
   //Sets whether the map should load the default base layer configuration
-  loadMapComponentDefaults:boolean = false;
+  loadMapComponentDefaults:boolean = true;
   //Public values (to be loaded if the user is not logged in)
   loadDefaultConfiguration() {
     this.loadMapComponentDefaults = true;
