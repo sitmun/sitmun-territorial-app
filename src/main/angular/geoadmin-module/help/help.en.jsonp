@@ -1,0 +1,29 @@
+// API callback
+angular.callbacks._0({
+	"32": {
+	 "title": "Search for data (catalogue)",
+	 "content": "Under \"Change topic\" you will find all available digital data classified by theme. When you select a data-set (by clicking on the circle symbol to the right) it will be displayed directly by the map viewer, as a separate layer of data. ",
+	 "image": ""
+	},
+	"37": {
+	 "title": "View additional information about a data-set",
+	 "content": "In the “Maps displayed”, “Search” or “Catalogue” pane, the “i” button provides access to an information window about the selected data-set (layer). The information provided covers; the range of applicable scales, available metadata, a link to the description of the data, how to order data, the relevant thematic geoportal and WMS service and the issue date (latest revision date) of the data.",
+	 "image": ""
+	},
+	"34": {
+	 "title": "Change the visibility of the selected dataset",
+	 "content": "The transparency/opacity of each selected geodata layer can be individually adjusted by activating the layer properties and changing the horizontal slider. The layer properties can then be hidden again if required.",
+	 "image": ""
+	},
+	"35": {
+	 "title": "Change the order of the selected datasets",
+	 "content": "Click the \"properties\" icon of the layer. The order of the selected geodata layers can be changed by using the up or down arrows or by drag & drop.",
+	 "image": ""
+	},
+	"36": {
+	 "title": "Remove selected datasets",
+	 "content": "A selected geodata layer can be removed from the “Maps displayed” list and from the map by using the “x” (close) button.",
+	 "image": ""
+	}
+}
+);

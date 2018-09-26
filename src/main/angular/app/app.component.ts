@@ -9,6 +9,10 @@ import {Principal,LoginService} from 'sitmun-plugin-core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
+  // Define selector attributes to enable angularjs-angular communication
+  static ngSelector = 'appRoot';
+  static selector = 'app-root';
+
   title = 'app';
   mobileQuery: MediaQueryList;
   translate;
@@ -32,7 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   changeLanguage(locale: string ){
-  this.translate.use(locale);
+    this.translate.use(locale);
   }
 
 

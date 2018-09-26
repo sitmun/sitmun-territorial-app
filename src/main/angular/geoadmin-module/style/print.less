@@ -1,0 +1,71 @@
+@media print {
+
+  // ****** PRINT GENERAL SETTINGS
+  .popover {
+    box-shadow: none;
+  }
+
+  #header {
+    background-color: transparent;
+    box-shadow: none !important;
+  }
+
+  #footer {
+    background-color: transparent;
+  }
+
+  [ga-attribution] {
+    bottom: 11px;
+  }
+
+  button, [ga-geolocation], [ga-seo],
+  #pulldown, #search-container, #mouseposition,
+  #feedback, #feedback-success, #feedback-error,
+  #import-popup, #draw-popup, #featuretree-popup,
+  #header form, #footer a, .alert, #toptools, [ga-background-selector],
+  [ga-time-selector], [ga-shop], [ga-attribution-warning],
+  .corner-ribbon, #footer, #header, #drawModeHeader {
+    display: none !important;
+  }
+
+  // ****** PRINT POPUP CONTENT SETTINGS
+  .htmlpopup-container, .legend-container {
+    a[href]:after {
+      content: " (" attr(href) ")";
+    }
+
+    .ir a:after,
+    a[href^="javascript:"]:after,
+    a[href^="#"]:after {
+      content: "";
+    }
+  }
+
+  // ****** PRINT MAP SETTINGS
+  [ga-map], .ol-viewport {
+    width: auto !important;
+    height: auto !important;
+    background: none !important;
+  }
+
+  .embed [ga-map] {
+    width: initial !important;
+    top: initial !important;
+    height: initial !important;
+  }
+
+  // ****** PRINT PROFILE SETTINGS
+  [ga-profile] {
+    margin-top: 15px;
+  }
+
+  .ga-profile-tooltip {
+    display: none;
+  }
+
+  [ga-profile] .profile-inner .profile-svg .profile-area {
+     fill-opacity: 0;
+     stroke: #000;
+     stroke-width: 2;
+  }
+}

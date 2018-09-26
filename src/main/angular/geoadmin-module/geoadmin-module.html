@@ -1,0 +1,341 @@
+<script>
+    //TODO FIXME use a better way of detection in an angular module
+    var useMobileProperties = false;
+    //Check if the device browser mode desktop|mobile|embed
+    (function() {
+        //Get if mobile | desktop | embed from upper
+        var w = window, l = w.location, n = w.navigator, p = 'desktop', m = l.search.match(/(?:mobile=(true|false))/);
+        if (!l.origin) {
+        l.origin=l.protocol + "//" +l.hostname; // IE fix
+        }
+        m = (m) ? m[1] : m; // avoid loops
+        var mode = p;
+        if (!(p == 'desktop' && m == 'false') && !(p == 'mobile' && m == 'true')) {
+            var href, onMobile = (('ontouchstart' in w) || n.maxTouchPoints > 1 || n.msMaxTouchPoints > 1) && (screen.width <= 768 || screen.height <= 768);
+            if (m == 'false' || (!onMobile && p == 'mobile')) {
+                //href = l.origin + l.pathname.replace(/\/(|(mobile|embed)\.html)$/, '/index.html') + l.search;
+                //set as embed
+                mode = 'desktop';
+            } else if (m == 'true' || (onMobile && p == 'desktop')) {
+                //href = l.origin + l.pathname.replace(/\/(|(index|embed)\.html)$/, '/mobile.html') + l.search;
+                //set as mobile
+                mode = 'mobile';
+            }
+            if (href && href != l.href) {
+                l.href = href;
+            }
+        }
+        useMobileProperties = (mode == 'mobile');
+    })();
+</script>
+<link href="geoadmin-module/style/app.css" rel="stylesheet"/>
+<div class="{{topicId}} {{langId}}"
+    ng-class="{
+        'search-focused': globals.searchFocused,
+        'webkit': globals.webkit,
+        'no-animation': !globals.animation,
+        'offline': globals.offline,
+        'online': !globals.offline,
+        'desktop': globals.desktop,
+        'mobile': globals.mobile,
+        'embed': globals.embed,
+        'ga-draw-active': globals.isDrawActive,
+        'ga-3d-active': globals.is3dActive,
+        'ios': globals.ios
+    }"
+    ng-controller="GaMainController"
+    ng-init="globals.showTreePageSettings=false">
+    
+    <!-- The below conditional is ignored by >= IE10 and all other browsers -->
+    <!--[if (IE)&(lt IE 10)]>
+    <script>
+    (function(){
+    var msgDocumentMode = "";
+    var msgCompatibilityView = "";
+    if (document.documentMode < 9) {
+        msgDocumentMode = "DE: Dokumentmodus von Internet Explorer muss 9 oder gr\366sser sein.\nFR: Le mode de document d'Internet Explorer doit \352tre plus grand ou \351gal \340 9.\nIT: Modalit\340 documento dev'essere maggiore o uguale a 9.\nEN: The document mode of your navigator should be 9 or higher.\n\n";
+    }
+    if (navigator.userAgent.indexOf("MSIE 7.0") > 0 || navigator.userAgent.indexOf("MSIE 8.0") > 0) {
+        msgCompatibilityView = "DE: Sie verwenden einen veralteten Browser. Um die Website in vollem Umfang nutzen zu k\366nnnen, empfehlen wir Ihnen in diesem Falle, einen neueren Browser zu installieren: www.browsehappy.com/?locale=de\nFR: Vous utilisez un navigateur trop ancien. Pour utiliser toute les possibilit\351s de ce site web, nous vous conseillons d'installer un navigateur plus r\351cent: www.browsehappy.com/?locale=fr\nIT:Si sta utilizzando un browser non completamente supportato. Per sfruttare appieno le funzionalit\340 di questo sito web, consigliamo di installare un browser pi\371 recente: www.browsehappy.com/?locale=it\nEN: You are using an outdated browser. Please upgrade in this case your browser to improve your experience: browsehappy.com/?locale=en\n\n";
+    }
+    if (msgDocumentMode.length > 0 || msgCompatibilityView.length > 0) {
+        alert(msgDocumentMode + msgCompatibilityView + "DE: \334ber die 'F12' Taste k\366nnen Sie die Einstellungen auf 'Browsermodus:IE9' und 'Dokumentmodus:IE-9-Standards' setzen.\nFR: En appuyant sur F12, vous pouvez modifier l'affichage de compatibilit\351 en choisissant le mode navigateur IE9 et le mode de document normes IE9.\nIT: Premere F12 per modificare la Modalit\340 browser scegliendo poi 'Modalit\340 browser IE9' e 'Modalit\340 documento: IE9'.\nEN: Click on F12 and change the compatibility view mode and the document mode to 'Browser Mode:IE9' and 'Document Mode: IE9 standards'.");
+    }
+    })();
+    </script>
+    <script src="geoadmin-module/lib/IE9Fixes.js"></script>
+    <script>
+        IE9Fix.call(this);
+    </script>
+    <![endif]-->
+
+    <!-- #header -->
+    
+    <style>
+       
+    </style>
+
+    <!--
+    <div id="drawModeHeader" class="navbar navbar-fixed-top">
+    <div class="ga-centered ga-title" translate>draw_mode_title</div>
+    <button class="btn btn-primary pull-left" ng-click="globals.isDrawActive = false">
+        <i class="fa fa-arrow-left"></i>
+        <span translate>draw_back</span>
+    </button>
+    <span ga-help="66"></span>
+    <button class="btn ga-menu-bt" ng-click="globals.pulldownShown=true" translate>menu</button>
+    <div class="ga-offline-msg alert-danger" translate>offline_sorry</div>
+    </div>
+    -->
+    <!-- #drawModeHeader -->
+
+    <div id="loader"></div>
+    <div tabindex="1" ga-map ga-map-map="map" ga-map-ol3d="::ol3d">
+    <!--        
+    <div ng-cloak class="corner-ribbon" ng-show="globals.is3dActive">
+        3D - BETA
+    </div>
+    -->
+
+    <div ng-cloak translate-cloak
+        ga-background-selector
+        ga-background-selector-map="::map"
+        ga-background-selector-ol3d="::ol3d">
+    </div>
+    <div ga-swipe
+        ga-swipe-map="map"
+        ga-swipe-active="globals.isSwipeActive"
+        style="display:none;">
+    </div>
+    <div ng-cloak translate-cloak
+        ga-attribution
+        ga-attribution-map="::map"
+        ga-attribution-ol3d="::ol3d">
+    </div>
+    </div> <!-- #map -->
+
+    <!-- #footer -->
+
+    <div ng-controller="GaTimeSelectorController">
+    <div ga-time-selector
+        ga-time-selector-map="::map"
+        ga-time-selector-ol3d="::ol3d"
+        ga-time-selector-options="options">
+    </div>
+    </div>
+
+    <div  id="pulldown" ng-cloak translate-cloak
+        ng-class="{
+            'selection-and-catalog-shown': (globals.catalogShown && globals.selectionShown),
+            'ga-pulldown-shown': globals.pulldownShown
+        }"
+    >
+    <div class="ga-visible-mobile ga-pulldown-shadow" ng-click="globals.pulldownShown = false"></div>
+    <div id="pulldown-content" class="content" style="display:none; visibility:hidden;">
+
+        <!-- Catalog -->
+        <div class="panel" ng-hide="globals.isDrawActive">
+        <div class="theme-toggle">
+            <a class="topic-modal-toggle" data-toggle="modal" data-target="#topicSelector .modal" href="#">
+            <span translate>choose_theme</span>
+            </a>
+        </div>
+        <a id="catalogHeading" class="panel-heading accordion-toggle light collapsed"
+            data-toggle="collapse" href="#catalog"
+            ga-collapsible-show="globals.catalogShown">
+            <i class="fa fa-caret-down"></i>
+            <span>{{topicId | translate}}</span>
+            <span ga-help="32,37,39" ga-help-options="{showOnHover:true}"></span>
+        </a>
+        <div id="catalog" class="collapse" ng-controller="GaCatalogtreeController">
+            <div class="panel-body panel-body-wide accordion-inner-catalog"
+                ng-if="!globals.offline"
+                ga-catalogtree ga-catalogtree-map="map" ga-catalogtree-options="options">
+            </div>
+        </div>
+        </div> <!-- .panel -->
+
+        <!-- Selection -->
+        <div class="panel" ng-hide="globals.isDrawActive">
+        <a id="selectionHeading" class="panel-heading accordion-toggle light collapsed"
+            data-toggle="collapse" href="#selection"
+            ga-collapsible-show="globals.selectionShown">
+            <i class="fa fa-caret-down"></i>
+            <span translate>layers_displayed</span>
+            <span ga-help="34,35,36" ga-help-options="{showOnHover:true}"></span>
+        </a>
+        <div id="selection" class="collapse">
+            <div class="panel-body panel-body-wide" ga-layermanager ga-layermanager-map="map">
+            </div>
+        <!--
+            <div class="ga-more-layers" ng-click="hidePulldownOnXSmallScreen()">
+            <a href="" ga-help-highlight=".ga-search-input-container input" translate>
+                help_search_data_link
+            </a>
+            </div>
+        -->
+        </div>
+        </div> <!-- .panel -->
+
+        <div class="panel" ng-if="globals.settingsShown">
+        <a class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#pulldown-content" href="#settings">
+            <i class="fa fa-caret-down"></i>
+            <span translate>settings</span>
+        </a>
+        <div id="settings" class="collapse">
+            <div class="panel-body">
+            <p>
+                <a href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown">
+                <span ng-class="{'selected': globals.feedbackPopupShown}" translate>problem_announcement</span>
+                </a>
+            </p>
+            <div class="options">
+                <label ng-controller="GaTranslationController">
+                <span translate>lang_chooser_label</span>
+                <div ga-translation-selector ga-translation-selector-options="options"></div>
+                </label>
+            </div>
+            <hr>
+            <p>
+                <a target="_blank" translate translate-attr="{href: topicId + '_service_link_href'}">{{topicId + '_service_link_label'}}</a>
+                <br>
+                <a target="_blank" href="https://www.geo.admin.ch/{{langId}}/about-swiss-geoportal/impressum.html#copyright" translate>copyright_label</a>
+            </p>
+            </div>
+        </div>
+        </div> <!-- .panel -->
+
+        <button id="menu-button" class="btn btn-default"
+                ng-click="globals.pulldownShown=!globals.pulldownShown">
+            <span class="ga-hidden-mobile">
+                <i class="fa fa-caret-down"></i>
+                <span class="ga-hidden-collapsed" translate>close_menu</span>
+                <span class="ga-visible-collapsed" translate>open_menu</span>
+            </span>
+            <span class="ga-visible-mobile">
+                <span class="ga-hidden-collapsed" translate>close</span>
+            </span>
+        </button>
+    </div> <!-- #pulldown-content -->
+    </div> <!-- #pulldown -->
+
+    <button ng-if="!globals.pulldownShown" id="menu-button-mobile" class="btn btn-default"
+        ng-click="globals.pulldownShown=!globals.pulldownShown">
+        <span class="ga-visible-mobile">
+                <span class="ga-visible-collapsed" translate>open_menu</span>
+        </span>
+    </button>
+
+    <!-- Modal: offline menu -->
+    <div ng-cloak translate-cloak ga-offline-menu ga-offline-menu-map="map"></div>
+
+    <!-- Modal: topics selection -->
+    <div id="topicSelector" ng-cloak translate-cloak ga-topic></div>
+
+    <div ng-if="globals.homescreen" class="popover homescreen"
+        ng-class="{
+        'visible': globals.homescreen,
+        'bottom': globals.tablet,
+        'top': !globals.tablet,
+        'tr': (globals.ios >= 8)
+        }">
+    <div class="arrow"></div>
+    <div class="popover-title">
+        <span translate>homescreen_title</span>
+        <button type="button" class="ga-icon ga-btn fa fa-remove" ng-click="globals.homescreen=false"></button>
+    </div>
+    <div class="popover-content">
+        <i class="fa fa-share"></i>&nbsp;
+        <span translate>homescreen_content</span>
+    </div>
+    </div>
+
+    <!-- in source, we need to load it here because IE9 ignores it in
+        the comments for reasons unknown to me. In prod, it's only
+        loaded in IE9 -->
+    <!--        
+    <script src="geoadmin-module/lib/polyfill.js"></script>
+    <script src="geoadmin-module/lib/IE9Fixes.js"></script>
+    <script>
+    //This call only affects browser <= IE9
+    IE9Fix.call(this);
+    </script>
+    <script src="geoadmin-module/lib/jquery.js"></script>
+    <script src="geoadmin-module/lib/jQuery.XDomainRequest.js"></script>
+    <script src="geoadmin-module/lib/slip.js"></script>
+    -->
+
+    <!--
+    <script src="geoadmin-module/lib/angular.js"></script>
+    <script src="geoadmin-module/lib/angular-translate.js"></script>
+    <script src="geoadmin-module/lib/angular-translate-loader-static-files.js"></script>
+    -->
+    
+    <!--
+    <script src="geoadmin-module/lib/d3.js"></script>
+
+    <script src="geoadmin-module/lib/bootstrap.js"></script>
+
+    <script src="geoadmin-module/lib/typeahead.jquery.js"></script>
+    <script src="geoadmin-module/lib/proj4js-compressed.js"></script>
+    <script src="geoadmin-module/lib/EPSG21781.js"></script>
+    <script src="geoadmin-module/lib/EPSG2056.js"></script>
+    <script src="geoadmin-module/lib/EPSG32631.js"></script>
+    <script src="geoadmin-module/lib/EPSG32632.js"></script>
+    <script src="geoadmin-module/lib/fastclick.js"></script>
+    <script src="geoadmin-module/lib/localforage.js"></script>
+    <script src="geoadmin-module/lib/filesaver.js"></script>
+    <script src="geoadmin-module/lib/moment-with-customlocales.js"></script>
+    <script src="geoadmin-module/lib/gyronorm.complete.js"></script>
+    -->
+
+
+    <!-- Use Closure to load the application scripts -->
+    <!--
+    <script>
+        window.CLOSURE_NO_DEPS = true;
+    </script>
+    -->
+
+    <script>
+        //TODO FIXME the load event is not triggered
+        window.addEventListener('load', function() {
+            FastClick.attach(document.body);
+            //Show layer tree container
+            $('#pulldown-content').css('visibility', 'visible').show();
+        }, false);
+        //Make the tree visible
+        $('#pulldown-content').css('visibility', 'visible').show();
+    </script>
+
+    <style>
+        /*TODO FIXME modal background the nodes are added outside of the tree directive and as a result
+          block the dialog and app interaction always on top of the modal dialog
+         */
+        .modal-backdrop {
+            position: relative !important;
+            visibility: hidden !important;
+            display: hidden !important;
+        }
+    </style>
+
+    <script>
+
+    /**
+     *  Workaround for iOS 6.x bug: content shifted after orientation change
+     *  As we can't use css fix ( see http://stackoverflow.com/a/12518946/29655 )
+     *  we force a redraw on orientation change
+     *  ( see http://stackoverflow.com/a/13235711/29655 )
+     */
+    (function(){
+        $(window).on('orientationchange', function(){
+        $('#header').hide();
+        setTimeout(function(){
+            $('#header').show();
+            // iOS 7 minimal-ui meta tag bug
+            window.scrollTo(0, 0);
+        }, 0);
+        });
+    })();
+    </script>
+</div>

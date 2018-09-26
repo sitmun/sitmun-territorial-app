@@ -1,7 +1,7 @@
 {
    "true":"Si",
    "false":"No",
-    "application":{"name":"Aplicación Territorial - Diputació Barcelona"},
+    "application":{"name":"Aplicació Territorial - Diputació Barcelona"},
    "mat-paginator-intl":{
     	"first_page":"Primera pàgina",
     	"items_per_page":"elements per pàgina",
