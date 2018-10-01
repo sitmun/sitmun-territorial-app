@@ -121,10 +121,13 @@ task clonePlugins {
       mkdir cloneDir
     }
     sitmunlibs.each { k, v ->
-      grgit.clone {
-        dir = "$cloneDir/${v.artifactId}"
-        uri = "${v.gitrepo}"
-        refToCheckout = "${v.version}"
+      def targetDir = file("$cloneDir/${v.artifactId}")
+      if (!targetDir.exists()) {
+        grgit.clone {
+          dir = targetDir
+          uri = "${v.gitrepo}"
+          refToCheckout = "${v.version}"
+        }
       }
     }
   }
@@ -138,11 +141,14 @@ task installPlugins(dependsOn: clonePlugins) {
     // It creates a temporary GradleBuild task for each sitmun dependency in sitmunlibs
     // and runs the specified tasks for each
     sitmunlibs.each { k,v ->
-      def tempTask = tasks.create(name: "install_module_${v.artifactId}", type: GradleBuild)
-      tempTask.dir = file("$cloneDir/${v.artifactId}")
-      tempTask.startParameter.projectProperties["customVersion"] = v.version
-      tempTask.tasks = [ "install" ]
-      tempTask.execute()
+      def targetDir = file("$cloneDir/${v.artifactId}/dist")
+      if (!targetDir.exists()) {
+        def tempTask = tasks.create(name: "install_module_${v.artifactId}", type: GradleBuild)
+        tempTask.dir = file("$cloneDir/${v.artifactId}")
+        tempTask.startParameter.projectProperties["customVersion"] = v.version
+        tempTask.tasks = [ "install" ]
+        tempTask.execute()
+      }
     }
   }
 }
