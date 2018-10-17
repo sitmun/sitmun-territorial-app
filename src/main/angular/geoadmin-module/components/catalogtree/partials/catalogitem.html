@@ -6,6 +6,7 @@
       <input type="checkbox" ng-model="item.active" ng-model-options="{getterSetter: true}"/>
       <span></span>
       {{item.label}}
+      <span ng-if="isQueryable(item.layerBodId)" class="ga-icon ga-btn fa fa-info-sign"></span>
     </label>
     <button ng-if="hasLegend(item.layerBodId)" class="ga-icon ga-btn fa fa-info-sign" ng-click="getLegend($event, item.layerBodId)"></button>
   </div>

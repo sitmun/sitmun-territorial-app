@@ -313,6 +313,15 @@
               this.isWMSLayer(olLayerOrId));
         },
 
+        isExternalQueryableWmsLayer:  function(olLayerOrId) {
+          if (angular.isString(olLayerOrId)) {
+            return /^WMS\|\|/.test(olLayerOrId) &&
+                olLayerOrId.split('||').length >= 4;
+          }
+          return !!(olLayerOrId && !olLayerOrId.bodId &&
+              this.isQueryableWMSLayer(olLayerOrId));
+        },
+
         // Test if a layer is an external WMTS layer added by the ImportWMTS
         // tool or permalink
         isExternalWmtsLayer: function(olLayerOrId) {
@@ -471,6 +480,25 @@
               olLayer.getSource &&
               (olLayer.getSource() instanceof ol.source.ImageWMS ||
               olLayer.getSource() instanceof ol.source.TileWMS));
+        },
+
+        /**
+         * Tests if a layer is a WMS layer.
+         * @param {ol.layer.Base} an ol layer.
+         *
+         * Returns true if the layer is a WMS
+         * Returns false if the layer is not a WMS
+         */
+        isQueryableWMSLayer: function(olLayer) {
+          if (!!(olLayer && !(olLayer instanceof ol.layer.Group) &&
+              olLayer.getSource)) {
+              if (olLayer.getSource() instanceof ol.source.ImageWMS ||
+                  olLayer.getSource() instanceof ol.source.TileWMS) {
+                  return olLayer.getSource().getProperties() &&
+                         olLayer.getSource().getProperties()["queryable"];
+              }
+          }
+          return false;
         }
       };
     };

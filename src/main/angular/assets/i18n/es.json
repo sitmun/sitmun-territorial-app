@@ -113,5 +113,21 @@
     "AERIAL_BASE_LAYER_OPTION": "Aérea",
     "HYBRID_BASE_LAYER_OPTION": "Híbrida",
     "OK_BUTTON": "CONFIRMAR",
-    "CANCEL_BUTTON": "CANCELAR"
+    "CANCEL_BUTTON": "CANCELAR",
+    "CLOSE_BUTTON": "CERRAR",
+    "ZOOM_IN_TOOLTIP": "Acercar zoom",
+    "ZOOM_OUT_TOOLTIP": "Alejar zoom",
+    "LOCATION_TOOLTIP": "Ubicar usuario",
+    "BASE_LAYER_SELECTOR_TOOLTIP": "Selector de fondo",
+    "LENGTH_MEASUREMENT_TOOLTIP": "Medición de longitud",
+    "AREA_MEASUREMENT_TOOLTIP": "Medición del área",
+	"CONTINUE_LINE_MSG": "Haga click para continuar dibujando la línea",
+	"CONTINUE_POLYGON_MSG": "Haga click para continuar dibujando el polígono",
+    "ATTRIBUTIONS_TOOLTIP": "Atribuciones",
+    "OVERVIEW_MAP_TOOLTIP": "Mapa de situación",
+    "SCALE_BAR_TOOLTIP": "Escala 1:",
+	"GET_FEATURE_INFO_TOOLTIP": "Información de cartografía",
+	"FEATURE_INFO_DIALOG_TITLE": "Información",
+	"FEATURE_INFO_NO_DATA": "No hay información disponible",
+	"FEATURE_INFO_VIEW_MORE": "Ver más"
 }

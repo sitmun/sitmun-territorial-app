@@ -11,6 +11,7 @@
         <input type="checkbox" ng-model="layer.visible" />
         <span></span>
         {{layer.label}}
+        <span ng-if="isQueryable(layer)" class="ga-icon ga-btn fa fa-info-sign"></span>
       </label>
       <div class="ga-layer-time" ng-if="layer.timeEnabled">
         <button class="ga-btn badge"

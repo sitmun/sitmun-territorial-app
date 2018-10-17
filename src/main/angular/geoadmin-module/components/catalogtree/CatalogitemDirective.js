@@ -93,7 +93,13 @@
 			  //Check if the item has legend information defined and if its display is enabled
               var item = gaLayers.getLayer(bodId);
               return item && item.hasLegend && 
-                    !gaGlobalOptions.metadataInfoDisabled;
+                    !gaGlobalOptions.metadataInfoToolDisabled;
+            }
+
+            $scope.isQueryable = function(bodId) {
+			  //Check if the item is queryable
+              var item = gaLayers.getLayer(bodId);
+              return item && item.queryable;
             }
           },
 

@@ -1,9 +1,12 @@
 <!--Geoadmin tree module configuration-->
-<geoadmin-module ng-controller="GaTreeMapConfigurationController"
+<geoadmin-module 
+                    ng-controller="GaTreeMapConfigurationController as controller"
+                    ng-show="controller.getVisibility()"
                         extent="{{$ctrl.extent?$ctrl.extent:null}}"
                         tree-configuration="{{$ctrl.treeConfiguration?$ctrl.treeConfiguration:null}}"
                         backgrounds-configuration="{{$ctrl.backgroundsConfiguration?$ctrl.backgroundsConfiguration:null}}"
                         situation-map-configuration="{{$ctrl.situationMapConfiguration?$ctrl.situationMapConfiguration:null}}"
+                        application-configuration="{{$ctrl.applicationConfiguration?$ctrl.applicationConfiguration:null}}"
                         language-configuration="{{$ctrl.languageConfiguration?$ctrl.languageConfiguration:null}}"
                         default-attribution="{{$ctrl.defaultAttribution?$ctrl.defaultAttribution:null}}">
 </geoadmin-module>

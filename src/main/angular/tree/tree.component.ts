@@ -12,6 +12,7 @@ export const treeComponent = {
     treeConfiguration: any;
     backgroundsConfiguration: any;
     situationMapConfiguration: any;
+    applicationConfiguration: any;
     extent: any;
     languageConfiguration:string;
     defaultAttribution:string;
@@ -24,6 +25,7 @@ export class TreeComponentFacade extends UpgradeComponent {
   @Input() treeConfiguration;
   @Input() backgroundsConfiguration;
   @Input() situationMapConfiguration;
+  @Input() applicationConfiguration;
   @Input() languageConfiguration;
   @Input() defaultAttribution;
   @Input() extent;

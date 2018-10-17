@@ -8,14 +8,18 @@
  * Designed and built with all the love in the world by @mdo and @fat.
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-html {
-  font-family: sans-serif;
+/*html*/
+.geoadmin-module {
+  font-family: Roboto,"Helvetica Neue",sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
-body {
+
+/*body*/
+.geoadmin-module {
   margin: 0;
 }
+
 article,
 aside,
 details,
@@ -127,14 +131,14 @@ select {
   text-transform: none;
 }
 button,
-html input[type="button"],
+/*html*/.geoadmin-module input[type="button"],
 input[type="reset"],
 input[type="submit"] {
   -webkit-appearance: button;
   cursor: pointer;
 }
 button[disabled],
-html input[disabled] {
+/*html*/.geoadmin-module input[disabled] {
   cursor: default;
 }
 button::-moz-focus-inner,
@@ -192,12 +196,15 @@ th {
 *:after {
   box-sizing: border-box;
 }
-html {
-  font-size: 10px;
+/*html*/
+.geoadmin-module {
+  /*font-size: 10px;*/
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+*/
+/*body*/
+.geoadmin-module {
+  font-family:  Roboto,"Helvetica Neue",sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   color: #333333;
@@ -9479,9 +9486,10 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden !important;/* Evitar que al sacar un diálogo modal 
-                                 se redimensione el mapa por mostrar 
-                                 el scroll vertical*/
+  overflow: hidden !important;
+  /*FIX Avoid resizing the map upon showing a modal dialog and a 
+  vertical scroll appearing as a result
+  */
 }
 button,
 a,
@@ -11028,7 +11036,7 @@ body.webkit .ga-checkbox input[type=checkbox]:checked:after {
 #buttonGroup #zoomButtons {
   height: 95px;
 }
-body:not(.embed) {
+body:not(.embed){
   /* Map rotated with device heading has its own rotation button */
   /* When the 3 optional buttons are displayed */
   /* When only 2 optional buttons are displayed */

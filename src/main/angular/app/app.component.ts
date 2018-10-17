@@ -33,12 +33,9 @@ export class AppComponent implements OnInit, OnDestroy {
     //translate.use(browserLang.match(/es|ca/) ? browserLang : 'ca');
   }
 
-
-
   changeLanguage(locale: string ){
     this.translate.use(locale);
   }
-
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);

@@ -52,6 +52,14 @@ module.directive('geoadminModule', function($rootScope, geoadminModule) {
                         }
                       });
           scope.$watch(function() {
+                        return attrs.applicationConfiguration;
+                      }, function(val){
+                        if (val) {
+                          //send backgrounds configuration change
+                          $rootScope.$broadcast("gaApplicationConfigurationChanged", val);
+                        }
+                      });
+          scope.$watch(function() {
                         return attrs.languageConfiguration;
                       }, function(val){
                         if (val) {

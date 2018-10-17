@@ -4,7 +4,7 @@ import {AppComponent} from '../app/app.component';
 import {treeComponent} from './tree.component';
 
 import {MapComponent, MapConfigurationManagerService, 
-        Layer, LayerConfiguration, LayerGroup, OptionalParameter} from 'sitmun-plugin-core';
+        Layer, LayerConfiguration, LayerGroup, OptionalParameter, MapOptionsConfiguration} from 'sitmun-plugin-core';
 
 //Angular js imports
 import {GEOADMIN_MODULE_NAME} from '../geoadmin-module/geoadmin-module';
@@ -26,6 +26,21 @@ module.factory('mapConfigurationManagerService', downgradeInjectable(MapConfigur
 module.controller("GaTreeMapConfigurationController", 
 ['$rootScope', '$scope', 'mapConfigurationManagerService', 'gaLayers', 'gaTopic', '$attrs', 'geoadminModule',
   function($rootScope, $scope, mapConfigurationManagerService, gaLayers, gaTopic, $attrs, geoadminModule){
+
+    var visibility = false;
+
+    function hideTreeComponent() {
+      visibility = false;
+    }
+
+    function showTreeComponent() {
+      visibility = true;
+    }
+    
+    this.getVisibility = function() {
+      return visibility;
+    }
+
 
     // Translate the Tree Component Layer configuration into a Map Component Layer configuration
     function parseGeoAdminLayer(geoadminLayer) {
@@ -62,6 +77,9 @@ module.controller("GaTreeMapConfigurationController",
       if (geoadminLayer.wmsUrl != undefined) {
         layer.url = geoadminLayer.wmsUrl;
       }
+      if (geoadminLayer.queryable != undefined) {
+        layer.queryable = geoadminLayer.queryable;
+      }
       if (geoadminLayer.isBaseLayer != undefined) {
         layer.isBaseLayer = geoadminLayer.isBaseLayer;
       }
@@ -93,6 +111,24 @@ module.controller("GaTreeMapConfigurationController",
       if (geoadminLayer.extent != undefined) {
         layer.extent = geoadminLayer.extent;
       }
+      if (geoadminLayer.minimumScale != undefined) {
+        layer.minimumScale = geoadminLayer.minimumScale;
+      }
+      if (geoadminLayer.maximumScale != undefined) {
+        layer.maximumScale = geoadminLayer.maximumScale;
+      }
+      if (geoadminLayer.projections != undefined) {
+        layer.projections = geoadminLayer.projections;
+      }
+      if (geoadminLayer.infoUrl != undefined) {
+        layer.infoUrl = geoadminLayer.infoUrl;
+      }
+      if (geoadminLayer.metadataUrl != undefined) {
+        layer.metadataUrl = geoadminLayer.metadataUrl;
+      }
+      if (geoadminLayer.legendUrl != undefined) {
+        layer.legendUrl = geoadminLayer.legendUrl;
+      }
       if (geoadminLayer.optionalParameters != undefined) {
           layer.optionalParameters = geoadminLayer.optionalParameters;
       }
@@ -120,15 +156,16 @@ module.controller("GaTreeMapConfigurationController",
         if ((cartography.transparency != undefined) && (cartography.transparency != null)) {
             layerConfig.opacity = Math.abs(1 - cartography.transparency/100);
         }
-        //cartography.queryable;//Not supported currently
+        layerConfig.queryable = cartography.queryable;//Currently not supported 
         //cartography.queryAct;//Currently not supported
         //cartography.queryLay;//Currently not supported
 
         //Order of the layer in its group
         layerConfig.order = cartography.order;
 
-        //cartography.minimumScale;//Currently not supported ?? Units?
-        //cartography.maximumScale;//Currently not supported ?? Units?
+        layerConfig.minimumScale = cartography.minimumScale;
+        layerConfig.maximumScale = cartography.maximumScale;
+
         layerConfig.wmsLayers = cartography.layers;
         if (cartography.service) {
           //Service type values (wms, wmts...)
@@ -147,8 +184,9 @@ module.controller("GaTreeMapConfigurationController",
           } else {
             layerConfig.hasLegend = false;
           }
-          //Currently not used                      
-          //cartography.service.infoUrl;//Currently not supported for GetfeatureInfo requests
+                    
+          layerConfig.infoUrl = cartography.service.infoUrl;
+          layerConfig.projections = cartography.service.projections;
           //cartography.service.connection;//Currently not supported
 
           //Retrieve specific information to make the OGC service requests
@@ -284,12 +322,12 @@ module.controller("GaTreeMapConfigurationController",
         }//Currently not used
 
         //cartography.editable;//Currently not supported
-        //cartography.metadataUrl;//Currently not supported
+        layerConfig.metadataUrl = cartography.metadataUrl;
         //cartography.themeable;//Currently not supported
         //cartography.geometryType;//Currently not supported
         
         //TODO FIXME use a better way to disable metadata requests on the tree
-        layerConfig.metadataInfoDisabled = true;//Disable the display of the metadata info retrieval button in the tree for this layer
+        layerConfig.metadataInfoToolDisabled = true;//Disable the display of the metadata info retrieval button in the tree for this layer
 
         //Check if the layer configuration is correct
         if (!checkLayerConfig(layerConfig)) {
@@ -612,8 +650,6 @@ module.controller("GaTreeMapConfigurationController",
           layerName = applicationBackgroundId;
           if (applicationBackground.background) {
             layerName += (layerName?"-":"") + getElementId(applicationBackground.background);
-            //TODO SET THE GROUP VISIBILITY? or SELECT WITH VIEWER CONTROL
-            //background.background.active; //Currently not supported
             if (applicationBackground.background.cartographyGroup) {
               baseLayerNames = [];
               baseLayerOrders = [];
@@ -647,10 +683,14 @@ module.controller("GaTreeMapConfigurationController",
                 }
                 //Insert the element in the right order
                 insertInOrder(topicsConfiguration.baseGroups, {
+                  active: applicationBackground.background.active,//Only one background should be visible
+                                                                  //if more than one are marked as visible 
+                                                                  //then the last active one defined will
+                                                                  //be the one displayed initially
                   order: applicationBackground.order,//Will be ignored by the tree only for 
                                                      //generating the correct structure purposes
                     //TODO FIX CHANGE WHEN A MAP GENERIC BASE LAYER/LAYER GROUP SELECTOR IS DEFINED
-                  id: getKnownBackgroundId(applicationBackground.background.name),
+                  id: applicationBackground.background.name,
                   layers: baseLayerNames,
                   name: applicationBackground.background.name
                 });
@@ -703,6 +743,64 @@ module.controller("GaTreeMapConfigurationController",
       return situationMapLayersConfiguration;
     }
 
+    function parseApplicationConfiguration(configuration) {
+      /*
+        //Enabled configuration values
+          type: string;
+          theme: string;
+          scales: string;
+          projections: string;
+          treeAutoRefresh: Boolean;
+          parameters: ApplicationParameter[];
+      */
+      var optionsConfiguration = new MapOptionsConfiguration();
+      if (configuration.scales) {
+        optionsConfiguration.scales = configuration.scales;
+      }
+      if (configuration.projections) {
+        optionsConfiguration.projections = configuration.projections;
+      }
+      if (configuration.parameters && (configuration.parameters.length > 0)) {
+        optionsConfiguration.parameters = new Array<OptionalParameter>();
+        var parameter;
+        for (var i = 0, iLen = configuration.parameters.length; i < iLen; i++) {
+          try {
+            switch(configuration.parameters[i].name.toLowerCase()) {
+              case "minscale":
+                configuration.minScale = eval(configuration.parameters[i].value);
+                break;
+              case "maxscale":
+                configuration.maxScale = eval(configuration.parameters[i].value);
+                break;
+              case "extent":
+                configuration.extent = eval(configuration.parameters[i].value);
+                break;
+              case "maxextent":
+                configuration.maxExtent = eval(configuration.parameters[i].value);
+                break;
+              case "tilewidth":
+                configuration.tileWidth = eval(configuration.parameters[i].value);
+                break;
+              case "tileheight":
+                configuration.tileHeight = eval(configuration.parameters[i].value);
+                break;
+              default:
+                parameter = new OptionalParameter();
+                parameter.key = configuration.parameters[i].name;
+                parameter.value = configuration.parameters[i].value;
+                optionsConfiguration.parameters.push(parameter);
+            }
+          } catch(e) {
+            parameter = new OptionalParameter();
+            parameter.key = configuration.parameters[i].name;
+            parameter.value = configuration.parameters[i].value;
+            optionsConfiguration.parameters.push(parameter);
+          }
+        }
+      }
+      return optionsConfiguration;
+    }
+
     //Loads the new trees configuration 
     $rootScope.loadTreesConfiguration = function(trees) {
         if (trees) {
@@ -710,11 +808,18 @@ module.controller("GaTreeMapConfigurationController",
                 trees = JSON.parse(trees);
             }
             var configuration = parseTreesConfiguration(trees);
-            gaLayers.loadTreeLayersConfiguration(configuration.layersConfiguration)
-            .then(function(layers){
-                gaTopic.loadTopicsConfiguration(configuration.topicsConfiguration, 
-                    configuration.catalogsConfiguration)
-            });
+            if (configuration.layersConfiguration != null) {
+              gaLayers.loadTreeLayersConfiguration(configuration.layersConfiguration)
+              .then(function(layers){
+                  gaTopic.loadTopicsConfiguration(configuration.topicsConfiguration, 
+                      configuration.catalogsConfiguration);
+                      if (configuration.topicsConfiguration && configuration.topicsConfiguration.topics && 
+                          configuration.topicsConfiguration.topics.length) {
+                        //There are trees defined
+                        showTreeComponent();
+                      }
+              });
+            }
         }
     }
 
@@ -743,24 +848,50 @@ module.controller("GaTreeMapConfigurationController",
         }
     }
 
-    function setSituationMapConfiguration(configuration) {
-        //TODO send the situation map configuration to the map component
+    //Loads the new application configuration 
+    $rootScope.loadApplicationConfiguration = function(applicationConfiguration) {
+        if (applicationConfiguration) {
+            if (typeof applicationConfiguration == "string") {
+              applicationConfiguration = JSON.parse(applicationConfiguration);
+            }
+            var configuration = parseApplicationConfiguration(applicationConfiguration);
+            //It has nothing to do with the tree
+            setMapConfiguration(configuration);
+        }
+    }
+
+    function setSituationMapConfiguration(layerConfigList) {
+        if (layerConfigList) {
+          //Layer configuration array
+          var layer;
+          var layers = [];
+          for (var i = 0, iLen = layerConfigList.length; i < iLen; i++) {
+            layer = parseGeoAdminLayer(layerConfigList[i]);
+            if (layer) {
+              //All the situation map configuation layers are visible
+              layer.visibility = true;
+              layers.push(layer);
+            }
+          }
+          //Send the new situation map configuration to the map (will clear any prior configuration)
+          mapConfigurationManagerService.loadSituationMapConfiguration(layers);
+        }
     }
 
     //Loads the new map configuration (¿retrieved from the app Application object?)
     function setMapConfiguration(configuration) {
       //Send to viewer via service the mapConfiguration parameters
-      var situationMapLayers = null;
-      if (configuration.situationMapLayersConfiguration) {
-        setSituationMapConfiguration(configuration.situationMapLayersConfiguration);
-      }
-      if (configuration.scales) {
-
-      }
-      if (configuration.projections) {
-
-      }
-      //TODO send configuration to service
+      /*
+      //Enabled configuration values
+        type: string;
+        theme: string;
+        scales: string;
+        projections: string;
+        treeAutoRefresh: Boolean;
+        parameters: ApplicationParameter[];
+      */
+      //Send configuration to service
+      mapConfigurationManagerService.loadMapOptionsConfiguration(configuration);
     }
 
     //Listen to topic changes and load the new configuration into the tree component
@@ -801,9 +932,15 @@ module.controller("GaTreeMapConfigurationController",
       var group;
       var config;
       var layers;
+      var groupActivated = false;
       for (var i = 0, iLen = configuration.length; i < iLen; i++) {
         group = new LayerGroup();
         config = configuration[i];
+        //Only the first group marked defined active is set so
+        group.active = config.active && !groupActivated;
+        if (group.active) {
+          groupActivated = true;
+        }
         group.id = config.id;
         group.layers = new Array<Layer>();
         var layer;
@@ -973,6 +1110,11 @@ module.controller("GaTreeMapConfigurationController",
       }
     });
 
-    //TODO Listener for the directive application parameter changes (Territory, extetnds, scales, projections...)
+    //Listen to the directive's application configuration attribute changes and loads the new configuration 
+    $rootScope.$on('gaApplicationConfigurationChanged', function(event, params) {
+      if (params) {
+        $rootScope.loadApplicationConfiguration(params);
+      }
+    });
 }]);
 

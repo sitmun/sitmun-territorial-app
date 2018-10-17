@@ -260,12 +260,17 @@
           return layer.bodId && !!gaLayers.getLayer(layer.bodId);
         };
 
+        scope.isQueryableBodLayer = function(layer) {
+          var bodLayer = layer.bodId && gaLayers.getLayer(layer.bodId);
+          return bodLayer && bodLayer.queryable;
+        }
+
 		//Check if the display of metadata information has been disabled globally
-        scope.metadataInfoEnabled = function(layer) {
+        scope.metadataInfoToolEnabled = function(layer) {
           var value = true;
           try {
             var layer = gaLayers.getLayer(layer.bodId) 
-            value = !layer.metadataInfoDisabled;
+            value = !layer.metadataInfoToolDisabled;
           } catch (e) {
             value = false;
           }
@@ -274,9 +279,14 @@
 
 		//Check if the layer has metadata information associated and its display is not disabled
         scope.hasMetadata = function(layer) {
-          return ((scope.isBodLayer(layer) && scope.metadataInfoEnabled(layer)) ||
+          return (scope.isBodLayer(layer) ||
               gaMapUtils.isExternalWmsLayer(layer)) && 
-              !gaGlobalOptions.metadataInfoDisabled;
+              !gaGlobalOptions.metadataInfoToolDisabled;
+        };
+
+        scope.isQueryable = function(layer) {
+          return (scope.isQueryableBodLayer(layer) ||
+              gaMapUtils.isExternalQueryableWmsLayer(layer));
         };
 
         scope.showWarning = function(layer) {
@@ -290,7 +300,10 @@
         };
 
         scope.displayLayerMetadata = function(evt, layer) {
-          gaLayerMetadataPopup.toggle(layer);
+          //Default behavior show popup with metadata info
+          if (scope.metadataInfoToolEnabled(layer)) {
+            gaLayerMetadataPopup.toggle(layer);
+          }
           evt.preventDefault();
         };
 

@@ -129,7 +129,7 @@ module.constant('gaGlobalOptions', {
   localConfigurationOverwrite: localConfigurationOverwrite,
 
   checkIfOffline: false, // Do not check if offline
-  metadataInfoDisabled: true, //Do not show metadata/legend info buttons next to layers
+  metadataInfoToolDisabled: true, //Do not show metadata/legend info buttons next to layers
   helpInfoDisabled: true, //Do not show help buttons
   permalinkDisabled: true, //Do not store state on the browser url
   disableDisplayActiveLayerAttribution: true //Do not show the attribution information for the displayed layers
