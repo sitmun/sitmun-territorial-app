@@ -39,6 +39,12 @@ ext {
     artifactId: 'sitmun-plugin-core',
     version   : 'master'
   ]
+  sitmunlibs.sitmundemo = [
+    gitrepo   : 'https://github.com/sitmun/sitmun-plugin-demo.git',
+    groupId   : 'org.sitmun',
+    artifactId: 'sitmun-plugin-demo',
+    version   : 'master'
+  ]
 }
 
 dependencies {

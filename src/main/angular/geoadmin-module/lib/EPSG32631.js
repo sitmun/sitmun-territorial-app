@@ -1,1 +1,0 @@
-proj4.defs("EPSG:32631","+proj=utm +zone=31 +datum=WGS84 +units=m +no_defs");

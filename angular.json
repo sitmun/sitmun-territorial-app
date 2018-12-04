@@ -21,7 +21,11 @@
             "assets": [
               "src/main/angular/favicon.ico",
               "src/main/angular/assets",
-              "src/main/angular/geoadmin-module"
+              {
+                "input": "node_modules/sitmun-plugin-demo/geoadmin-module-lib",
+                "glob": "**/*.*",
+                "output": "./geoadmin-module-lib"
+              }
             ],
             "styles": [
               "src/main/angular/assets/css/styles.css",

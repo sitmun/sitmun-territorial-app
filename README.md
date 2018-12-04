@@ -34,3 +34,4 @@ If you the SonarCloud analysis has been properly run, you can see the report by 
 This project depends on these plugins (already considered in the build script):
 
 - [sitmun-plugin-core](https://github.com/sitmun/sitmun-plugin-core)
+- [sitmun-plugin-demo](https://github.com/sitmun/sitmun-plugin-demo)

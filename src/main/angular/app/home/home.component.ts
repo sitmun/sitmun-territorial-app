@@ -611,8 +611,8 @@ export class HomeComponent implements OnInit {
   parseCartography(cartography, isBackground, topics) {
     var layerConfig = null;
     if (cartography) {
-      var parameterList;/*Array<ServiceParameter>*/
-      var parameter;/*ServiceParameter*/
+      var parameterList;
+      var parameter;
       var parameterName:string;
       var optionalParameter: OptionalParameter;
 
@@ -716,18 +716,18 @@ export class HomeComponent implements OnInit {
         }
       }
 
-      //TODO get the values for
+      //Other properties not supported currently
       /*
       "label": string,
       "attribution": string,
       "attributionUrl": string,
       "extent": Array<Number>(4),//extent
-      "highlightable": bool,//se resalta en el arbol
+      "highlightable": bool,
       "chargeable": bool,
       "searchable": bool,
       "timeEnabled": bool,
-      "tooltip": bool, //Puede mostrar tooltips??
-      "topics": string,//ids de topics a los que pertenece
+      "tooltip": bool,
+      "topics": string,
       */
       //Default values in the meantime
       if (!layerConfig.url_transparent) {
@@ -758,7 +758,7 @@ export class HomeComponent implements OnInit {
           layerConfig.attributionUrl = "";
       }
 
-      //TODO FIXME Mandatory set an extent in case of a WMTS layer
+      //Mandatory set an extent in case of a WMTS layer
       if (!layerConfig.extent) {
           layerConfig.extent = null;
       }
@@ -797,7 +797,7 @@ export class HomeComponent implements OnInit {
       //cartography.themeable;//Currently not supported
       //cartography.geometryType;//Currently not supported
       
-      //TODO FIXME use a better way to disable metadata requests on the tree
+      //FIXME improve metadata requests in the tree disabling
       layerConfig.metadataInfoToolDisabled = true;//Disable the display of the metadata info retrieval button in the tree for this layer
 
       //Check if the layer configuration is correct
@@ -998,7 +998,6 @@ export class HomeComponent implements OnInit {
               }
             }
             
-            //if (!angular.equals(tempLayersConfiguration, {})) {   
             if (tempLayersConfiguration && (Object.getOwnPropertyNames(tempLayersConfiguration).length > 0)) {
               //If no layers have been added the topics won't be considered
               if (catalogNodes && catalogNodes["root"]) {
@@ -1035,7 +1034,7 @@ export class HomeComponent implements OnInit {
               if (layersConfiguration == null) {
                 layersConfiguration = {};
               }
-              //angular.extend(layersConfiguration, tempLayersConfiguration)
+
               //Update the layers configuration object
               for (var pName in tempLayersConfiguration) {
                 layersConfiguration[pName] = 
@@ -1045,7 +1044,6 @@ export class HomeComponent implements OnInit {
           }
         }
       }
-      //if (angular.equals(layersConfiguration, {})) {
       if (layersConfiguration && (Object.getOwnPropertyNames(layersConfiguration).length == 0)) {
           layersConfiguration = null;
           topicsConfiguration = null;
@@ -1063,7 +1061,7 @@ export class HomeComponent implements OnInit {
   getMapcomponentLayersConfiguration(trees:Tree[]) {
     let layers:Array<Layer> = new Array<Layer>();
 
-    //FIXME Only the first tree only the selected tree??, only the active cartographies??
+    //FIXME should we parse the first the selected tree only  or the active cartographies only
     var parsedConfiguration = this.parseTreesConfiguration([trees[0]]);
     if (parsedConfiguration && parsedConfiguration.layersConfiguration) {
       for (var i in parsedConfiguration.layersConfiguration) {
@@ -1154,7 +1152,7 @@ export class HomeComponent implements OnInit {
                                                                 //be the one displayed initially
                 order: applicationBackground.order,//Will be ignored by the tree only for 
                                                    //generating the correct structure purposes
-                  //TODO FIX CHANGE WHEN A MAP GENERIC BASE LAYER/LAYER GROUP SELECTOR IS DEFINED
+                  //FIXME If a map generic base layer/layer group selector is defined use that value
                 id: applicationBackground.background.name,
                 layers: baseLayerNames,
                 name: applicationBackground.background.name
@@ -1252,7 +1250,7 @@ export class HomeComponent implements OnInit {
               case "extent":
                 configuration.extent = eval(configuration.parameters[i].value);
                 break;
-              //TODO FIXME get from Territory??
+              //FIXME get from Territory
               case "maxExtent":
                 configuration.maxExtent = eval(configuration.parameters[i].value);
                 break;
@@ -1529,7 +1527,7 @@ export class HomeComponent implements OnInit {
     this.treeComponentEnabled = enable;
   }
 
-  //TODO FIXME use a better way
+  //Check if the task refers to the Tree Plugin
   isTreeComponentTask(task:Task):boolean {
     return (task && task.name && 
         (task.name.toLowerCase().indexOf(GEOADMIN_TREE_TASK_ID) != -1));
@@ -1538,6 +1536,8 @@ export class HomeComponent implements OnInit {
   loadDefaultTaskConfiguration() {
     this.enableTreeComponent(false);
   }
+
+  //Hardcoded default tree component content configuration
 
   getDefaultTreesConfiguration() {
     var defaultTree = new Tree();
@@ -2678,7 +2678,7 @@ export class HomeComponent implements OnInit {
     return options;
   }
 
-  //TODO FIXME receive the default configuration from the api
+  //FIXME receive the default configuration from the api
   //Sets whether the map should load the default base layer configuration
   loadMapComponentDefaults:boolean = false;
   //Public values (to be loaded if the user is not logged in)

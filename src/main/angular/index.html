@@ -12,42 +12,10 @@
 
 </head>
 <body>
-
-  <!-- Tree angularjs configuration files -->
-  <!-- in source, we need to load it here because IE9 ignores it in
-  the comments for reasons unknown to me. In prod, it's only
-  loaded in IE9 -->
-  <script src="geoadmin-module/lib/polyfill.js"></script>
-  <script src="geoadmin-module/lib/IE9Fixes.js"></script>
-  <script>
-      //This call only affects browser <= IE9
-      IE9Fix.call(this);
-  </script>
-  
-  <!-- Load jquery before angular for the tree module to work properly
-       Load the rest of the tree geoadmin module scripts here in to
-       avoid getting them loaded more than once
-   -->
-  <script src="./geoadmin-module/lib/jquery.js"></script>
-  <script src="./geoadmin-module/lib/jQuery.XDomainRequest.js"></script>
-  <script src="./geoadmin-module/lib/slip.js"></script>
-
-  <script src="./geoadmin-module/lib/d3.js"></script>
-
-  <script src="./geoadmin-module/lib/bootstrap.js"></script>
-
-  <script src="./geoadmin-module/lib/typeahead.jquery.js"></script>
-  <script src="./geoadmin-module/lib/proj4js-compressed.js"></script>
-  <script src="./geoadmin-module/lib/EPSG21781.js"></script>
-  <script src="./geoadmin-module/lib/EPSG2056.js"></script>
-  <script src="./geoadmin-module/lib/EPSG32631.js"></script>
-  <script src="./geoadmin-module/lib/EPSG32632.js"></script>
-  <script src="./geoadmin-module/lib/fastclick.js"></script>
-  <script src="./geoadmin-module/lib/localforage.js"></script>
-  <script src="./geoadmin-module/lib/filesaver.js"></script>
-  <script src="./geoadmin-module/lib/moment-with-customlocales.js"></script>
-  <script src="./geoadmin-module/lib/gyronorm.complete.js"></script>
-
+  <!--
+    Tree angularjs dependency configuration files
+  -->
+  <script src="geoadmin-module-lib/geoadmin-module-dependencies.js"></script>
 <app-root></app-root>
 </body>
 </html>

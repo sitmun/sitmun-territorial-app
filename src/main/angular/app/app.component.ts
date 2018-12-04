@@ -3,6 +3,9 @@ import {MediaMatcher} from '@angular/cdk/layout';
 import {TranslateService} from '@ngx-translate/core';
 import {Principal,LoginService} from 'sitmun-plugin-core';
 
+const SUPPORTED_LANGUAGES:Array<string> = ['es', 'en','ca'];
+const DEFAULT_LANGUAGE:string = 'ca';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -26,11 +29,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     this.translate = trans;
-    this.translate.addLangs(['es', 'en','ca']);
-    this.translate.setDefaultLang('ca');
-
-    //const browserLang = translate.getBrowserLang();
-    //translate.use(browserLang.match(/es|ca/) ? browserLang : 'ca');
+    //Supported languages definition
+    this.translate.addLangs(SUPPORTED_LANGUAGES);
+    this.translate.setDefaultLang(DEFAULT_LANGUAGE);
   }
 
   changeLanguage(locale: string ){
