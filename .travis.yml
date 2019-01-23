@@ -4,7 +4,6 @@ addons:
 
 script:
   - ./build-scripts/script.sh
-  - sonar-scanner
 
 after_success: ./build-scripts/after_success.sh
 
