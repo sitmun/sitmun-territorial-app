@@ -901,7 +901,7 @@ export class HomeComponent implements OnInit {
         }
         layersConfiguration[layerConfig.serverLayerName] = layerConfig;
         categoryNode = {
-          "order": node.ordee,
+          "orden": node.ordee,
           "category": "layer",
           "staging": "prod",
           "label": label,
@@ -919,7 +919,7 @@ export class HomeComponent implements OnInit {
       //Create a node group if it does not exist and add it to the parent children node list
       if (!categoryNodes[elementId]) {
         categoryNode = {
-          "order": node.ordee,
+          "orden": node.ordee,
           "category": "topic",
           "staging": "prod",
           "selectedOpen": node.active,
@@ -1558,7 +1558,7 @@ export class HomeComponent implements OnInit {
     var node = new TreeNode();
     node.name = "Transporte";
     node.tooltip = "Transporte";
-    node.ordee = 1;
+    node.orden = 1;
     node.active = true;
     node._links = {
           "self": {
