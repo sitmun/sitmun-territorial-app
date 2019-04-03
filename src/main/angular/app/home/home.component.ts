@@ -10,7 +10,7 @@ import {Application, ApplicationService, Tree, TreeService,
         Background, Cartography, Service, Role, Connection, TreeNode, ServiceParameter,
         TaskAvailability, TaskAvailabilityService, CartographyAvailability, CartographyAvailabilityService, 
         TaskService, Task, MapConfigurationManagerService, Layer, LayerGroup, MapOptionsConfiguration,
-        OptionalParameter, MapComponentStatus, GEOADMIN_TREE_TASK_ID} from 'sitmun-plugin-core';
+        OptionalParameter, MapComponentStatus, GEOADMIN_TREE_TASK_ID, TERRITORIAL_APP_NAME} from 'sitmun-plugin-core';
 
 export class ApplicationConfiguration {
   type: string;
@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
   static selector = 'app-home'
   public isHome = true;
   application: Application;
-  id = 5;
+  id = null;
 
   //Default attribution
   defaultAttribution:string = "© Institut Cartogràfíc i Geològic de Catalunya";
@@ -1326,6 +1326,47 @@ export class HomeComponent implements OnInit {
   }
 
   getApplicationData() {
+    if (this.id == null) {
+      //Get the existing applications and find the Territorial App's id
+      this.applicationService.getAll().subscribe((applications: Application[]) => {
+        if (applications) {
+          var application:Application;
+          var found:Boolean = false;
+          for (var i = 0, iLen = applications.length; i < iLen; i++) {
+            application = applications[i];
+            if (application != null) {
+              if ((application.name != null) && 
+                  (application.name.toLowerCase() == 
+                   TERRITORIAL_APP_NAME.toLowerCase())) {
+                  this.id = this.getElementId(application);
+                  found = true;
+                  break;
+              }
+            }
+          }
+          if (found) {
+            this.getTerritorialApplicationData();      
+          } else {
+            //Behaviour on fail or user not logged
+            this.loadDefaultApplicationConfiguration();    
+          }
+        } else {
+          console.log(`No applications found, returning to list`);
+          //TODO behaviour on information not found
+          this.loadDefaultApplicationConfiguration();
+        }
+      },
+      (error:any) => {
+        //Behaviour on fail or user not logged
+       this.loadDefaultApplicationConfiguration();
+      });
+    } else {
+      //The Territorial app's id has already been initialized, just request its data
+      this.getTerritorialApplicationData();    
+    }
+  }
+
+  getTerritorialApplicationData() {
     if (this.id) {
       this.applicationService.get(this.id).subscribe((application: any) => {
         if (application) {
