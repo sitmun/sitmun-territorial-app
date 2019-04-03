@@ -901,7 +901,7 @@ export class HomeComponent implements OnInit {
         }
         layersConfiguration[layerConfig.serverLayerName] = layerConfig;
         categoryNode = {
-          "orden": node.ordee,
+          "orden": node.orden,
           "category": "layer",
           "staging": "prod",
           "label": label,
@@ -919,7 +919,7 @@ export class HomeComponent implements OnInit {
       //Create a node group if it does not exist and add it to the parent children node list
       if (!categoryNodes[elementId]) {
         categoryNode = {
-          "orden": node.ordee,
+          "orden": node.orden,
           "category": "topic",
           "staging": "prod",
           "selectedOpen": node.active,
