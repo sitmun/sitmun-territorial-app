@@ -14,15 +14,15 @@ import { AngularHalModule } from 'angular-hal';
 import { HomeComponent } from './home/home.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {SitmunPluginCoreModule,LoginComponent,AccountEditComponent,AccountChangePasswordComponent,
-        MapConfigurationManagerService, 
-        Layer, LayerConfiguration, LayerGroup} from 'sitmun-plugin-core';
+import {SitmunPluginCoreModule,LoginComponent,AccountEditComponent,AccountChangePasswordComponent} from 'sitmun-plugin-core';
 
 import * as angular from 'angular';
 
 //Tree imports
 import {TreeComponentFacade,topicServiceProvider, TREE_MODULE_NAME, GEOADMIN_MODULE_NAME,
   treeComponent} from 'sitmun-plugin-demo';
+import {SitmunFrontendCoreModule, MapConfigurationManagerService,
+  Layer, LayerConfiguration, LayerGroup} from 'sitmun-frontend-core';
 
 //AppComponent Downgrade
 var treeModule = angular.
@@ -65,7 +65,8 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule, 
     FlexLayoutModule,
-    SitmunPluginCoreModule.forRoot(),  
+    SitmunFrontendCoreModule.forRoot(),
+    SitmunPluginCoreModule,
     MatSidenavModule,
     //Upgrade module import for angularjs modules
     UpgradeModule,
