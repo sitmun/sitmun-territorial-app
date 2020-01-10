@@ -14,7 +14,7 @@ import { AngularHalModule } from 'angular-hal';
 import { HomeComponent } from './home/home.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {SitmunPluginCoreModule,LoginComponent,AccountEditComponent,AccountChangePasswordComponent} from 'sitmun-plugin-core';
+import {SitmunFrontendGuiModule, LoginComponent,AccountEditComponent,AccountChangePasswordComponent} from 'sitmun-frontend-gui';
 
 import * as angular from 'angular';
 
@@ -66,7 +66,7 @@ const appRoutes: Routes = [
     BrowserModule, 
     FlexLayoutModule,
     SitmunFrontendCoreModule.forRoot(),
-    SitmunPluginCoreModule,
+    SitmunFrontendGuiModule,
     MatSidenavModule,
     //Upgrade module import for angularjs modules
     UpgradeModule,

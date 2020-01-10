@@ -37,14 +37,30 @@ repositories {
 // Dependencies to other SITMUN plugins must be declared all here to facilitate using them
 // in different places of this script
 ext {
+ // Java plugins/libraries
   sitmunlibs = [:]
   sitmunlibs.sitmuncore = [
-    gitrepo   : 'https://github.com/sitmun/sitmun-plugin-core.git',
+    gitrepo   : 'https://github.com/sitmun/sitmun-backend-core.git',
     groupId   : 'org.sitmun',
-    artifactId: 'sitmun-plugin-core',
+    artifactId: 'sitmun-backend-core',
     version   : 'master'
   ]
-  sitmunlibs.sitmundemo = [
+
+  // Node modules
+  sitmunmodules = [:]
+  sitmunmodules.sitmunfrontendcore = [
+    gitrepo : 'https://github.com/sitmun/sitmun-frontend-core.git',
+    groupId : 'org.sitmun',
+    artifactId : 'sitmun-frontend-core',
+    version : 'master'
+  ]
+  sitmunmodules.sitmunfrontendgui = [
+     gitrepo : 'https://github.com/sitmun/sitmun-frontend-gui.git',
+     groupId : 'org.sitmun',
+     artifactId : 'sitmun-frontend-gui',
+     version : 'master'
+  ]
+  sitmunmodules.sitmundemo = [
     gitrepo   : 'https://github.com/sitmun/sitmun-plugin-demo.git',
     groupId   : 'org.sitmun',
     artifactId: 'sitmun-plugin-demo',
@@ -143,6 +159,16 @@ task clonePlugins {
         }
       }
     }
+    sitmunmodules.each { k, v ->
+      def targetDir = file("$cloneDir/${v.artifactId}")
+      if (!targetDir.exists()) {
+         grgit.clone {
+           dir = targetDir
+           uri = "${v.gitrepo}"
+           refToCheckout = "${v.version}"
+         }
+       }
+     }
   }
 }
 
@@ -163,6 +189,16 @@ task installPlugins(dependsOn: clonePlugins) {
         tempTask.execute()
       }
     }
+    sitmunmodules.each { k,v ->
+              def targetDir = file("$cloneDir/${v.artifactId}/dist")
+              if (!targetDir.exists()) {
+                def tempTask = tasks.create(name: "install_module_${v.artifactId}", type: GradleBuild)
+                tempTask.dir = file("$cloneDir/${v.artifactId}")
+                tempTask.startParameter.projectProperties["customVersion"] = v.version
+                tempTask.tasks = [ "install" ]
+                tempTask.execute()
+              }
+            }
   }
 }
 
@@ -170,7 +206,7 @@ installPlugins.mustRunAfter clonePlugins
 
 task installModules(dependsOn: [installPlugins, npmInstall]) {
   doLast {
-    sitmunlibs.values().each {
+    sitmunmodules.values().each {
       def sourceDir = "$cloneDir/${it.artifactId}/dist" 
       ant.copy(todir: "node_modules") {
         fileset(dir: sourceDir)
@@ -198,7 +234,7 @@ compileJava.mustRunAfter installPlugins
 processResources.dependsOn buildApp
 processResources.mustRunAfter buildApp
 
-task install(dependsOn: publishToMavenLocal)
+task install(dependsOn: installModules)
 
 clean {
   delete "node_modules"
