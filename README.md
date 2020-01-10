@@ -33,5 +33,7 @@ If you the SonarCloud analysis has been properly run, you can see the report by 
 ## Dependencies
 This project depends on these plugins (already considered in the build script):
 
-- [sitmun-plugin-core](https://github.com/sitmun/sitmun-plugin-core)
+- [sitmun-backend-core](https://github.com/sitmun/sitmun-backend-core)
+- [sitmun-frontend-core](https://github.com/sitmun/sitmun-frontend-core)
+- [sitmun-frontend-gui](https://github.com/sitmun/sitmun-frontend-gui)
 - [sitmun-plugin-demo](https://github.com/sitmun/sitmun-plugin-demo)
