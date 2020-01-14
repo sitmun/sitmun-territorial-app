@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/sitmun/sitmun-territorial-app.svg?branch=master)](https://travis-ci.org/sitmun/sitmun-territorial-app)
+[![Build Status](https://api.travis-ci.com/sitmun/sitmun-territorial-app.svg?branch=master)](https://travis-ci.com/sitmun/sitmun-territorial-app)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.sitmun%3Asitmun-territorial-app&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.sitmun%3Asitmun-territorial-app)
 
 # SITMUN Territorial Application
