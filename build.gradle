@@ -9,7 +9,6 @@ plugins {
 // Output result file type definition
 //- use 'java' value to create a JAR file
 //- use 'war' value to create a deployable WAR file
-//apply plugin: 'java'
 apply plugin: 'java'
 
 def targetJavaVersion = JavaVersion.VERSION_1_8;
@@ -30,36 +29,27 @@ group = 'org.sitmun'
 version = "${sitmun_version}"
 
 repositories {
-  mavenLocal()
-  mavenCentral()
+    mavenLocal()
+    mavenCentral()
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/sitmun/sitmun-backend-core")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")            
+            password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_API_KEY")
+        }
+    }
 }
+
 
 // Dependencies to other SITMUN plugins must be declared all here to facilitate using them
 // in different places of this script
 ext {
  // Java plugins/libraries
-  sitmunlibs = [:]
-  sitmunlibs.sitmuncore = [
-    gitrepo   : 'https://github.com/sitmun/sitmun-backend-core.git',
-    groupId   : 'org.sitmun',
-    artifactId: 'sitmun-backend-core',
-    version   : 'master'
-  ]
+  sitmunlibs = [:]  
 
   // Node modules
   sitmunmodules = [:]
-  sitmunmodules.sitmunfrontendcore = [
-    gitrepo : 'https://github.com/sitmun/sitmun-frontend-core.git',
-    groupId : 'org.sitmun',
-    artifactId : 'sitmun-frontend-core',
-    version : 'master'
-  ]
-  sitmunmodules.sitmunfrontendgui = [
-     gitrepo : 'https://github.com/sitmun/sitmun-frontend-gui.git',
-     groupId : 'org.sitmun',
-     artifactId : 'sitmun-frontend-gui',
-     version : 'master'
-  ]
   sitmunmodules.sitmundemo = [
     gitrepo   : 'https://github.com/sitmun/sitmun-plugin-demo.git',
     groupId   : 'org.sitmun',
@@ -70,6 +60,8 @@ ext {
 
 dependencies {
   sitmunlibs.each { k, v -> compile "${v.groupId}:${v.artifactId}:${v.version}" }
+  
+  compile ("org.sitmun:sitmun-backend-core:0.7.0+")
 
   if (project.hasProperty('oracle')) {
     compile "com.zaxxer:HikariCP:${hikaricp_version}"
@@ -97,6 +89,14 @@ bootRun {
     profiles = 'postgresql'
   }
   args = ["--spring.profiles.active=" + profiles]
+}
+
+sourceSets {
+  main {
+    resources {
+      srcDirs = ["$projectDir/dist", "$projectDir/src/main/resources"]
+    }
+  }
 }
 
 task checkJavaVersion {
@@ -130,15 +130,6 @@ sonarqube {
     property 'sonar.organization', 'sitmun'
     properties["sonar.sources"] += 'src/main/angular'  
   }  
-}
-
-
-sourceSets {
-  main {
-    resources {
-      srcDirs = ["$projectDir/dist", "$projectDir/src/main/resources"]
-    }
-  }
 }
 
 def cloneDir = file("$buildDir/plugins-src")

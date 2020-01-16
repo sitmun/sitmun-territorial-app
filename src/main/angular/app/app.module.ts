@@ -9,12 +9,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { ExternalConfigurationService } from './ExternalConfigurationService';
-import { AngularHalModule } from 'angular-hal';
+import { AngularHalModule } from '@sitmun/frontend-core';
 
 import { HomeComponent } from './home/home.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {SitmunFrontendGuiModule, LoginComponent,AccountEditComponent,AccountChangePasswordComponent} from 'sitmun-frontend-gui';
+import {SitmunFrontendGuiModule, LoginComponent,AccountEditComponent,AccountChangePasswordComponent} from '@sitmun/frontend-gui';
 
 import * as angular from 'angular';
 
@@ -22,7 +22,7 @@ import * as angular from 'angular';
 import {TreeComponentFacade,topicServiceProvider, TREE_MODULE_NAME, GEOADMIN_MODULE_NAME,
   treeComponent} from 'sitmun-plugin-demo';
 import {SitmunFrontendCoreModule, MapConfigurationManagerService,
-  Layer, LayerConfiguration, LayerGroup} from 'sitmun-frontend-core';
+  Layer, LayerConfiguration, LayerGroup} from '@sitmun/frontend-core';
 
 //AppComponent Downgrade
 var treeModule = angular.

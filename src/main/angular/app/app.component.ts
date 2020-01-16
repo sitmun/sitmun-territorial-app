@@ -1,7 +1,7 @@
 import { Component,OnInit,ChangeDetectorRef,OnDestroy  } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {TranslateService} from '@ngx-translate/core';
-import {Principal,LoginService} from 'sitmun-frontend-core';
+import {Principal,LoginService} from '@sitmun/frontend-core';
 
 const SUPPORTED_LANGUAGES:Array<string> = ['es', 'en','ca'];
 const DEFAULT_LANGUAGE:string = 'ca';

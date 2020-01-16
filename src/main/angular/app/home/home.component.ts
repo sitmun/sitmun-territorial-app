@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable} from 'rxjs';
-import { ResourceHelper, Resource } from 'angular-hal';
+import { ResourceHelper, Resource } from '@sitmun/frontend-core';
 import { JsonPipe } from '@angular/common';
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 
@@ -10,7 +10,7 @@ import {Application, ApplicationService, Tree, TreeService,
         Background, Cartography, Service, Role, Connection, TreeNode, ServiceParameter,
         TaskAvailability, TaskAvailabilityService, CartographyAvailability, CartographyAvailabilityService, 
         TaskService, Task, MapConfigurationManagerService, Layer, LayerGroup, MapOptionsConfiguration,
-        OptionalParameter, MapComponentStatus, GEOADMIN_TREE_TASK_ID, TERRITORIAL_APP_NAME} from 'sitmun-frontend-core';
+        OptionalParameter, MapComponentStatus, GEOADMIN_TREE_TASK_ID, TERRITORIAL_APP_NAME} from '@sitmun/frontend-core';
 
 export class ApplicationConfiguration {
   type: string;
